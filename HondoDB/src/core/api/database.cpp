@@ -9,7 +9,7 @@ namespace hondo {
 HondoDB::HondoDB(Connection c)
 	: connection(c)
 {
-
+	
 }
 
 HondoDB::HondoDB(util::String address, util::String port, util::String user, util::String password, util::String db_name)
@@ -25,7 +25,7 @@ HondoDB::~HondoDB()
 
 Collection get(util::String name)
 {
-	
+	return Collection();
 }
 
 }

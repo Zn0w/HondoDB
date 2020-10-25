@@ -2,25 +2,30 @@
 
 #include "../util/string.h"
 
+#include "../storage_engine/storage.h"
+
 
 namespace hondo {
 
-struct FunctionResult
+struct CollectionFunctionResult
 {
 	bool success;
 	util::String message;
+	// data
 };
 
 struct Collection
 {
 	util::String name;
 
-	FunctionResult create();
-	FunctionResult retrieve();
-	FunctionResult update();
-	FunctionResult destroy();
+	CollectionFunctionResult create();
+	CollectionFunctionResult retrieve();
+	CollectionFunctionResult update();
+	CollectionFunctionResult destroy();
 
-	FunctionResult nuke();
+	CollectionFunctionResult retrieve_all();
+
+	CollectionFunctionResult nuke();
 };
 
 }
