@@ -23,7 +23,7 @@ HondoDB::~HondoDB()
 	
 }
 
-Collection get(util::String name)
+Collection HondoDB::get(util::String name)
 {
 	return Collection();
 }

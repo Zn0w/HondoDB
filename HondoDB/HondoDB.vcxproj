@@ -77,6 +77,14 @@
     <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -133,6 +141,7 @@
     <ClInclude Include="src\core\api\api.h" />
     <ClInclude Include="src\core\api\collection.h" />
     <ClInclude Include="src\core\api\database.h" />
+    <ClInclude Include="src\core\object\object.h" />
     <ClInclude Include="src\core\storage_engine\storage.h" />
     <ClInclude Include="src\core\util\string.h" />
   </ItemGroup>

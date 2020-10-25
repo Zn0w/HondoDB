@@ -3,22 +3,24 @@
 
 namespace hondo {
 
-/*CollectionFunctionResult create()
+/*CollectionFunctionResult Collection::create()
 {}
 
-CollectionFunctionResult retrieve()
+CollectionFunctionResult Collection::retrieve()
 {}
 
-CollectionFunctionResult update()
+CollectionFunctionResult Collection::update()
 {}
 
-CollectionFunctionResult destroy()
-{}
+CollectionFunctionResult Collection::destroy()
+{}*/
 
-CollectionFunctionResult retrieve_all()
-{}
+CollectionFunctionResult Collection::retrieve_all()
+{
+	return CollectionFunctionResult();
+}
 
-CollectionFunctionResult nuke()
+/*CollectionFunctionResult Collection::nuke()
 {}*/
 
 }
