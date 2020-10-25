@@ -3,15 +3,17 @@
 #include "../util/string.h"
 
 
+namespace hondo {
+
 struct FunctionResult
 {
 	bool success;
-	String message;
+	util::String message;
 };
 
 struct Collection
 {
-	String name;
+	util::String name;
 
 	FunctionResult create();
 	FunctionResult retrieve();
@@ -20,3 +22,5 @@ struct Collection
 
 	FunctionResult nuke();
 };
+
+}
