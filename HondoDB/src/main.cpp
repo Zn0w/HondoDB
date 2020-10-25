@@ -4,7 +4,7 @@
 
 int main()
 {
-	greet();
+	
 
 	system("pause");
 	
