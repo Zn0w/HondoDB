@@ -25,7 +25,7 @@ HondoDB::~HondoDB()
 
 Collection HondoDB::get(util::String name)
 {
-	return Collection();
+	return Collection(&connection, name);
 }
 
 }

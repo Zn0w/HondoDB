@@ -32,7 +32,7 @@ void test_net()
 
 	if (socket.is_open())
 	{
-
+		util::String request = "";
 	}
 }
 
