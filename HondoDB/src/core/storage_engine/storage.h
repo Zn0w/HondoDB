@@ -1,24 +1,23 @@
 #pragma once
 
-#include <fstream>
-#include <filesystem>
+#include <string>
+#include <cstdio>
+#include <cerrno>
 
 #include "../util/string.h"
 
 
-namespace hondo { namespace storage {
+namespace hondo {
 
-struct StorageFunctionResult
+struct StorageEngine
 {
-	bool success;
-	util::String message;
-	// data
+	util::String root_directory;
+	util::String db_directory;
+
+	StorageEngine(util::String root_directory, util::String db_directory);
+	~StorageEngine();
+
+	util::String get_file_contents(util::String filename);
 };
 
-StorageFunctionResult create_database();
-StorageFunctionResult create_collection();
-
-StorageFunctionResult get_collection(util::String name);
-StorageFunctionResult get_collections(util::String name);
-
-} }
+}

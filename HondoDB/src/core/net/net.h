@@ -29,6 +29,11 @@ void test_net()
 	{
 		std::cout << "Failed to connect: " << error_code.message() << std::endl;
 	}
+
+	if (socket.is_open())
+	{
+
+	}
 }
 
 }

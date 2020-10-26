@@ -1,21 +1,22 @@
 #include "storage.h"
 
 
-namespace hondo { namespace storage {
+namespace hondo {
 
-/*StorageFunctionResult create_database()
-{}
-
-StorageFunctionResult create_collection()
-{}
-
-StorageFunctionResult get_collection(util::String name)
-{}
-
-StorageFunctionResult get_collections(util::String name)
+/*std::string StorageEngine::get_file_contents(util::String filename)
 {
-	for (const auto & entry : std::filesystem::directory_iterator(""))
-		;//std::cout << entry.path() << std::endl;
+	std::FILE *fp = std::fopen(filename, "rb");
+	if (fp)
+	{
+		std::string contents;
+		std::fseek(fp, 0, SEEK_END);
+		contents.resize(std::ftell(fp));
+		std::rewind(fp);
+		std::fread(&contents[0], 1, contents.size(), fp);
+		std::fclose(fp);
+		return(contents);
+	}
+	throw(errno);
 }*/
 
-} }
+}
