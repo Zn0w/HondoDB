@@ -2,7 +2,7 @@
 
 #include "../util/string.h"
 
-#include "../storage_engine/storage.h"
+#include "connection.h"
 
 
 namespace hondo {
@@ -14,9 +14,15 @@ struct CollectionFunctionResult
 	// data
 };
 
-struct Collection
+class Collection
 {
 	util::String name;
+	Connection* connection;
+
+
+public:
+	Collection(Connection* s_connection, util::String s_name);
+	~Collection();
 
 	CollectionFunctionResult create();
 	CollectionFunctionResult retrieve();

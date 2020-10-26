@@ -6,11 +6,15 @@
 
 #include "core/api/api.h"
 
+#include "core/net/net.h"
+
 
 int main()
 {
 	hondo::HondoDB mydb("d://myhondodb", "", "daniil", "1234", "mydb");
 	mydb.get("customers").retrieve_all();
+
+	hondo::test_net();
 	
 
 	system("pause");

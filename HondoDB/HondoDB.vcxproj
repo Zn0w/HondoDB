@@ -91,7 +91,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,6 +102,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,7 +115,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -125,6 +132,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,8 +150,10 @@
   <ItemGroup>
     <ClInclude Include="src\core\api\api.h" />
     <ClInclude Include="src\core\api\collection.h" />
+    <ClInclude Include="src\core\api\connection.h" />
     <ClInclude Include="src\core\api\database.h" />
-    <ClInclude Include="src\core\object\object.h" />
+    <ClInclude Include="src\core\item\item.h" />
+    <ClInclude Include="src\core\net\net.h" />
     <ClInclude Include="src\core\storage_engine\storage.h" />
     <ClInclude Include="src\core\util\string.h" />
   </ItemGroup>
