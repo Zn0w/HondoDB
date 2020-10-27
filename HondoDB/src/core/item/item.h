@@ -1,3 +1,7 @@
+/*
+	NOTE : data structure to represent JSON data
+*/
+
 #pragma once
 
 #include "../util/string.h"

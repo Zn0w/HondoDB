@@ -4,7 +4,7 @@
 namespace hondo { 
 
 /*
-	TODO : once net is working, chack if able to establish connection, if not, set a temporary db environment in computer memory
+	TODO : once net is working, check if able to establish connection, if not, set a temporary db environment in computer memory
 */
 HondoDB::HondoDB(Connection c)
 	: connection(c)

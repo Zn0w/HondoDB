@@ -1,18 +1,18 @@
+/*
+	NOTE : Item is JSON data returned from the operations (for update, delete and create operations,
+		JSON data representing the result of the operation will be returned)
+*/
+
 #pragma once
 
 #include "../util/string.h"
+
+#include "../item/item.h"
 
 #include "connection.h"
 
 
 namespace hondo {
-
-struct CollectionFunctionResult
-{
-	bool success;
-	util::String message;
-	// data
-};
 
 class Collection
 {
@@ -24,14 +24,14 @@ public:
 	Collection(Connection* s_connection, util::String s_name);
 	~Collection();
 
-	CollectionFunctionResult create();
-	CollectionFunctionResult retrieve();
-	CollectionFunctionResult update();
-	CollectionFunctionResult destroy();
+	Item create();
+	Item retrieve();
+	Item update();
+	Item destroy();
 
-	CollectionFunctionResult retrieve_all();
+	Item retrieve_all();
 
-	CollectionFunctionResult nuke();
+	Item nuke();
 };
 
 }
