@@ -6,7 +6,7 @@
 
 #include "core/api/api.h"
 
-#include "core/net/net.h"
+#include "core/client/client.h"
 
 
 int main()

@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <string>
 
 
 namespace hondo { namespace util {
@@ -22,7 +23,7 @@ public:
 	String();
 	String(const char* value);
 	String(unsigned int length);
-	//String(String string);
+	String(const String& string);
 	~String();
 
 	void put(const char* value);

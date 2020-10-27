@@ -8,6 +8,8 @@
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
 
+#include "../util/string.h"
+
 
 namespace hondo {
 
@@ -32,7 +34,7 @@ void test_net()
 
 	if (socket.is_open())
 	{
-		util::String request = "";
+		util::String request("");
 	}
 }
 

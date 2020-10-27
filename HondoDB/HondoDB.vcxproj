@@ -145,6 +145,7 @@
     <ClCompile Include="src\core\api\collection.cpp" />
     <ClCompile Include="src\core\api\database.cpp" />
     <ClCompile Include="src\core\storage_engine\storage.cpp" />
+    <ClCompile Include="src\core\util\string.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +154,7 @@
     <ClInclude Include="src\core\api\connection.h" />
     <ClInclude Include="src\core\api\database.h" />
     <ClInclude Include="src\core\item\item.h" />
-    <ClInclude Include="src\core\net\net.h" />
+    <ClInclude Include="src\core\client\client.h" />
     <ClInclude Include="src\core\storage_engine\storage.h" />
     <ClInclude Include="src\core\util\string.h" />
   </ItemGroup>
