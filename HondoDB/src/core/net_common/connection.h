@@ -32,6 +32,7 @@ protected:
 
 	// this queue holds all messages to be sent to the remote side of this connection
 	Queue<Message> messages_out;
+	Message message_temporary_in;
 
 	// this queue holds all messages that have been received from the remote side of this connection
 	// (this is a reference, since the owner of this connection has to provide a queue)
@@ -75,6 +76,52 @@ public:
 	uint32_t get_id()
 	{
 		return id;
+	}
+
+private:
+	// async
+	void read_header()
+	{
+		asio::async_read(socket, asio::buffer(&message_temporary_in.header, sizeof(MessageHeader)),
+			[this](std::error_code ec, size_t length)
+			{
+				if (!ec)
+				{
+					if (message_temporary_in.header.size > 0)
+					{
+						message_temporary_in.body.resize(message_temporary_in.header.size);
+						read_body();
+					}
+					else
+					{
+						add_to_incoming_message_queue();
+					}
+				}
+				else
+				{
+					std::cout << id << ": Read header fail" << std::endl;
+					socket.close();
+				}
+			}
+		);
+	}
+
+	// async
+	void read_body()
+	{
+
+	}
+
+	// async
+	void write_header()
+	{
+
+	}
+
+	// async
+	void write_body()
+	{
+
 	}
 };
 

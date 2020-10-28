@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <vector>
 
 #include "../util/string.h"
 
@@ -33,11 +34,11 @@ struct MessageHeader
 struct Message
 {
 	MessageHeader header;
-	util::String body;
+	std::vector<uint8_t> body;
 
 
 	// returns size of entire message in bytes
-	size_t size() { return sizeof(MessageHeader) + (body.get_length() + 1); }
+	size_t size() { return sizeof(MessageHeader) + body.size(); }
 };
 
 // When server gets message from client, it stores it in this structure, to be able to send a response back to that client
