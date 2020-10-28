@@ -41,9 +41,10 @@ public:
 	{
 		try
 		{
-			connection = std::make_unique<Connection>();
 			asio::ip::tcp::resolver resolver(context);
 			asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
+			
+			connection = std::make_unique<Connection>(Connection::owner::client, context, asio::ip::tcp::socket(context), messages_in);
 			connection->connect_to_server(endpoints);
 
 			context_thread = std::thread([this]() { context.run(); });

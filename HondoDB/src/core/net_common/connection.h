@@ -59,19 +59,52 @@ public:
 			if (socket.is_open())
 			{
 				id = s_id;
+				read_header();
 			}
 		}
 	}
 	
-	bool connect_to_server();
-	bool disconnect();
+	bool connect_to_server(asio::ip::tcp::resolver::results_type endpoints)
+	{
+		if (owner_type == owner::client)
+		{
+			asio::async_connect(socket, endpoints,
+				[this](std::error_code ec, asio::ip::tcp::endpoint endpoint)
+				{
+					if (!ec)
+					{
+						read_header();
+					}
+				}
+			);
+		}
+	}
+	
+	bool disconnect()
+	{
+		if (is_connected())
+			asio::post(context, [this]() { socket.close(); });
+	}
 
 	bool is_connected()
 	{
 		return socket.is_open();
 	}
 
-	bool send(const Message& message);
+	bool send(const Message& message)
+	{
+		asio::post(context,
+			[this, message]()
+			{
+				bool writing_message = !messages_out.empty();
+				messages_out.push_back(message);
+				if (!writing_message)
+				{
+					write_header();
+				}
+			}
+		);
+	}
 
 	uint32_t get_id()
 	{
@@ -109,19 +142,89 @@ private:
 	// async
 	void read_body()
 	{
-
+		asio::async_read(socket, asio::buffer(message_temporary_in.body.data(), message_temporary_in.body.size()),
+			[this](std::error_code ec, size_t length)
+			{
+				if (!ec)
+				{
+					add_to_incoming_message_queue();
+				}
+				else
+				{
+					std::cout << id << ": Read body fail" << std::endl;
+					socket.close();
+				}
+			}
+		);
 	}
 
 	// async
 	void write_header()
 	{
+		asio::async_write(socket, asio::buffer(&messages_out.front().header, sizeof(MessageHeader)),
+			[this](std::error_code ec, size_t length)
+			{
+				if (!ec)
+				{
+					if (messages_out.front().header.size > 0)
+					{
+						write_body();
+					}
+					else
+					{
+						messages_out.pop_front();
 
+						if (messages_out.empty())
+						{
+							// start a new async listening to a new outcoming message
+							write_header();
+						}
+					}
+				}
+				else
+				{
+					std::cout << id << ": Write header fail" << std::endl;
+					socket.close();
+				}
+			}
+		);
 	}
 
 	// async
 	void write_body()
 	{
+		asio::async_write(socket, asio::buffer(messages_out.front().body.data(), messages_out.front().body.size()),
+			[this](std::error_code ec, size_t length)
+			{
+				if (!ec)
+				{
+					messages_out.pop_front();
 
+					if (messages_out.empty())
+					{
+						// start a new async listening to a new outcoming message
+						write_header();
+					}
+				}
+				else
+				{
+					std::cout << id << ": Write body fail" << std::endl;
+					socket.close();
+				}
+			}
+		);
+	}
+
+	void add_to_incoming_message_queue()
+	{
+		if (owner_type == owner::server)
+			messages_in.push_back({ this->shared_from_this(), message_temporary_in });
+		// if client, no reason to save connection as well, since every client has only one connection (connection to the server)
+		else
+			messages_in.push_back({ nullptr, message_temporary_in });
+
+		// start a new async listening to a new incoming message
+		read_header();
 	}
 };
 
