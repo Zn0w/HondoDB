@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <stdint.h>
 
 #include <asio.hpp>
 #include <asio/ts/buffer.hpp>
@@ -14,6 +15,14 @@ namespace hondo { namespace net {
 
 class Connection : public std::enable_shared_from_this<Connection>
 {
+public:
+	enum class owner
+	{
+		server,
+		client
+	};
+
+
 protected:
 	// each connection has a unique socket to remote
 	asio::ip::tcp::socket socket;
@@ -28,20 +37,45 @@ protected:
 	// (this is a reference, since the owner of this connection has to provide a queue)
 	Queue<OwnedMessage>& messages_in;
 
+	owner owner_type = owner::server;
+	uint32_t id = 0;
+
 
 public:
-	Connection()
-		: socket(context)
-	{}
+	Connection(owner parent, asio::io_context& s_context, asio::ip::tcp::socket s_socket, Queue<OwnedMessage>& s_messages_in)
+		: context(s_context), socket(std::move(s_socket)), messages_in(s_messages_in)
+	{
+		owner_type = parent;
+	}
 	
 	virtual ~Connection()
 	{}
 
+	void connect_to_client(uint32_t s_id = 0)
+	{
+		if (owner_type == owner::server)
+		{
+			if (socket.is_open())
+			{
+				id = s_id;
+			}
+		}
+	}
+	
 	bool connect_to_server();
 	bool disconnect();
-	bool is_connected();
 
-	bool send_message(const Message& message);
+	bool is_connected()
+	{
+		return socket.is_open();
+	}
+
+	bool send(const Message& message);
+
+	uint32_t get_id()
+	{
+		return id;
+	}
 };
 
 } }

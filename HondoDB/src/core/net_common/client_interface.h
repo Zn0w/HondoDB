@@ -18,11 +18,8 @@ struct ClientInterface
 protected:
 	// asio context handles the data transfer
 	asio::io_context context;
-
 	std::thread context_thread;
-
 	asio::ip::tcp::socket socket;
-
 	std::unique_ptr<Connection> connection;
 
 private:
