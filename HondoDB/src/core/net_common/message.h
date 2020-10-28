@@ -35,6 +35,7 @@ struct Message
 	MessageHeader header;
 	util::String body;
 
+
 	// returns size of entire message in bytes
 	size_t size() { return sizeof(MessageHeader) + (body.get_length() + 1); }
 };

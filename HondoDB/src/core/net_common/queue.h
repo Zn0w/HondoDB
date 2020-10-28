@@ -15,6 +15,7 @@ namespace hondo { namespace net {
 template <typename T>
 class Queue
 {
+private:
 	std::mutex mux_queue;
 	std::deque<T> de_queue;
 
