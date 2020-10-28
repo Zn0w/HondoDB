@@ -155,6 +155,9 @@
     <ClInclude Include="src\core\api\database.h" />
     <ClInclude Include="src\core\item\item.h" />
     <ClInclude Include="src\core\client\client.h" />
+    <ClInclude Include="src\core\net_common\connection.h" />
+    <ClInclude Include="src\core\net_common\message.h" />
+    <ClInclude Include="src\core\net_common\queue.h" />
     <ClInclude Include="src\core\storage_engine\storage.h" />
     <ClInclude Include="src\core\util\string.h" />
   </ItemGroup>
