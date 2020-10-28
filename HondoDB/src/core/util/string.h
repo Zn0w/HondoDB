@@ -7,16 +7,15 @@
 
 #include <cstdlib>
 #include <string>
+#include <iostream>
 
 
 namespace hondo { namespace util {
 
-//typedef const char* String;
-
 class String
 {
-	char* memory;
-	unsigned int length;
+	char* memory = 0;
+	unsigned int length = 0;
 
 
 public:
@@ -43,11 +42,12 @@ public:
 
 	void put_at(char c, unsigned int position);
 
-	void append(const char* value);
-	void append(String string);
+	friend std::ostream& operator<<(std::ostream& os, const String& string);
 
 private:
 	void put(const char* value, unsigned int l);
+	void concat(const char* value, unsigned int l);
+	bool contains(const char* value, unsigned int l);
 	unsigned int count_length(const char* data);
 };
 
