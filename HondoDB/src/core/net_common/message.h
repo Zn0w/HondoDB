@@ -4,6 +4,8 @@
 
 #include "../util/string.h"
 
+#include "connection.h"
+
 
 namespace hondo { namespace net {
 
@@ -35,6 +37,13 @@ struct Message
 
 	// returns size of entire message in bytes
 	size_t size() { return sizeof(MessageHeader) + (body.get_length() + 1); }
+};
+
+// When server gets message from client, it stores it in this structure, to be able to send a response back to that client
+struct OwnedMessage
+{
+	std::shared_ptr<Connection> remote = nullptr;
+	Message message;
 };
 
 } }

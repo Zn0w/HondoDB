@@ -12,10 +12,11 @@
 
 namespace hondo { namespace net {
 
+template <typename T>
 class Queue
 {
 	std::mutex mux_queue;
-	std::deque<Message> de_queue;
+	std::deque<T> de_queue;
 
 
 public:
@@ -23,28 +24,28 @@ public:
 	Queue(const Queue&) = delete;	// prohibit copying (because it has mutexes)
 	~Queue() { clear(); }
 
-	const Message& front()
+	const T& front()
 	{
 		std::scoped_lock<std::mutex> lock(mux_queue);
 		return de_queue.front();
 	}
 
-	const Message& back()
+	const T& back()
 	{
 		std::scoped_lock<std::mutex> lock(mux_queue);
 		return de_queue.back();
 	}
 
-	void push_back(const Message& message)
+	void push_back(const T& item)
 	{
 		std::scoped_lock<std::mutex> lock(mux_queue);
-		de_queue.emplace_back(std::move(message));
+		de_queue.emplace_back(std::move(item));
 	}
 
-	void push_front(const Message& message)
+	void push_front(const T& item)
 	{
 		std::scoped_lock<std::mutex> lock(mux_queue);
-		de_queue.emplace_front(std::move(message));
+		de_queue.emplace_front(std::move(item));
 	}
 
 	bool empty()
@@ -65,7 +66,7 @@ public:
 		return de_queue.clear();
 	}
 
-	Message pop_front()
+	T pop_front()
 	{
 		std::scoped_lock<std::mutex> lock(mux_queue);
 		auto t = std::move(de_queue.front());
@@ -73,7 +74,7 @@ public:
 		return t;
 	}
 
-	Message pop_back()
+	T pop_back()
 	{
 		std::scoped_lock<std::mutex> lock(mux_queue);
 		auto t = std::move(de_queue.back());
