@@ -1,33 +1,30 @@
 #pragma once
 
-#include <stdint.h>
-#include <vector>
-
-#include "../util/string.h"
-
-#include "connection.h"
+#include "common.h"
 
 
 namespace hondo { namespace net {
 
 enum MessageType
 {
-	Rename,		// request to rename db or collection
+	ServerAccept,	// to let client know it's been accepted
 	
-	Create,		// request to put new data into db
-	Retrieve,	// request to retrieve some data from db
-	Update,		// request to update some data in db
-	Delete,		// request to delete some data in db
+	Rename,			// request to rename db or collection
+	
+	Create,			// request to put new data into db
+	Retrieve,		// request to retrieve some data from db
+	Update,			// request to update some data in db
+	Delete,			// request to delete some data in db
 
-	Result		// once server processes the request and performs some action, it returns JSON data,
-				// which contains:
-				//		info about wether or not the requested action was done successfully, and 
-				//		data associated with the requested action (e.g. if requested retrieve and it was successful, it contains retrieved data)
+	Result			// once server processes the request and performs some action, it returns JSON data,
+					// which contains:
+					//		info about wether or not the requested action was done successfully, and 
+					//		data associated with the requested action (e.g. if requested retrieve and it was successful, it contains retrieved data)
 };
 
 struct MessageHeader
 {
-	MessageType id;
+	MessageType id = Result;
 	uint32_t size = 0;	// size of body
 };
 
@@ -40,6 +37,8 @@ struct Message
 	// returns size of entire message in bytes
 	size_t size() { return sizeof(MessageHeader) + body.size(); }
 };
+
+class Connection;
 
 // When server gets message from client, it stores it in this structure, to be able to send a response back to that client
 struct OwnedMessage

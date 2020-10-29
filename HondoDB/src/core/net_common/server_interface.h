@@ -1,15 +1,9 @@
 #pragma once
 
-#include <thread>
-#include <stdint.h>
-#include <deque>
-
-#include <asio.hpp>
-#include <asio/ts/buffer.hpp>
-#include <asio/ts/internet.hpp>
-
+#include "common.h"
 #include "message.h"
 #include "queue.h"
+#include "connection.h"
 
 
 namespace hondo { namespace net {
@@ -56,7 +50,7 @@ public:
 		std::cout << "Server: has started!" << std::endl;
 	}
 
-	bool stop()
+	void stop()
 	{
 		context.stop();
 		if (context_thread.joinable())

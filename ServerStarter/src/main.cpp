@@ -1,11 +1,17 @@
 #include <iostream>
 
+#include <core/server/server.h>
+
 
 int main()
 {
-	std::cout << "The server program has started!" << std::endl;
+	hondo::Server server(27575);
+	server.start();
 
-	system("pause");
+	while (true)
+	{
+		server.update();
+	}
 	
 	return 0;
 }

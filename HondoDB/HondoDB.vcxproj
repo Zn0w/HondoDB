@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\api\collection.cpp" />
     <ClCompile Include="src\core\api\database.cpp" />
+    <ClCompile Include="src\core\server\server.h" />
     <ClCompile Include="src\core\storage_engine\storage.cpp" />
     <ClCompile Include="src\core\util\string.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -155,9 +156,12 @@
     <ClInclude Include="src\core\api\database.h" />
     <ClInclude Include="src\core\item\item.h" />
     <ClInclude Include="src\core\client\client.h" />
+    <ClInclude Include="src\core\net_common\client_interface.h" />
+    <ClInclude Include="src\core\net_common\common.h" />
     <ClInclude Include="src\core\net_common\connection.h" />
     <ClInclude Include="src\core\net_common\message.h" />
     <ClInclude Include="src\core\net_common\queue.h" />
+    <ClInclude Include="src\core\net_common\server_interface.h" />
     <ClInclude Include="src\core\storage_engine\storage.h" />
     <ClInclude Include="src\core\util\string.h" />
   </ItemGroup>

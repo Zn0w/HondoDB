@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include <mutex>
-#include <deque>
-
+#include "common.h"
 #include "message.h"
 
 
@@ -22,7 +20,7 @@ private:
 
 public:
 	Queue() {}
-	Queue(const Queue&) = delete;	// prohibit copying (because it has mutexes)
+	Queue(const Queue<T>&) = delete;	// prohibit copying (because it has mutexes)
 	~Queue() { clear(); }
 
 	const T& front()

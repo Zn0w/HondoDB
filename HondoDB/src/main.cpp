@@ -12,10 +12,8 @@
 
 int main()
 {
-	hondo::HondoDB mydb("d://myhondodb", "", "daniil", "1234", "mydb");
+	/*hondo::HondoDB mydb("d://myhondodb", "", "daniil", "1234", "mydb");
 	mydb.get("customers").retrieve_all();
-
-	hondo::test_net();
 
 	hondo::util::String s("hello world!");
 	assert(s.get_length() == 12);
@@ -48,10 +46,25 @@ int main()
 	hondo::util::String s3("Hello, "), s4("World!"), s5;
 	s5.concat(s3);
 	s5.concat(s4);
-	std::cout << s5 << std::endl;
-	
+	std::cout << s5 << std::endl;*/
 
-	system("pause");
+	hondo::Client client;
+	client.connect("127.0.0.1", 27575);
+
+	if (client.is_connected())
+	{
+		if (!client.incoming().empty())
+		{
+			auto message = client.incoming().pop_front().message;
+			switch (message.header.id)
+			{
+				case hondo::net::MessageType::ServerAccept:
+				{
+					std::cout << "Server Accepted Connection" << std::endl;
+				} break;
+			}
+		}
+	}
 	
 	return 0;
 }

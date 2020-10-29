@@ -1,12 +1,6 @@
 #pragma once
 
-#include <memory>
-#include <stdint.h>
-
-#include <asio.hpp>
-#include <asio/ts/buffer.hpp>
-#include <asio/ts/internet.hpp>
-
+#include "common.h"
 #include "message.h"
 #include "queue.h"
 
@@ -32,6 +26,7 @@ protected:
 
 	// this queue holds all messages to be sent to the remote side of this connection
 	Queue<Message> messages_out;
+
 	Message message_temporary_in;
 
 	// this queue holds all messages that have been received from the remote side of this connection
@@ -64,7 +59,7 @@ public:
 		}
 	}
 	
-	bool connect_to_server(asio::ip::tcp::resolver::results_type endpoints)
+	void connect_to_server(asio::ip::tcp::resolver::results_type endpoints)
 	{
 		if (owner_type == owner::client)
 		{
@@ -80,7 +75,7 @@ public:
 		}
 	}
 	
-	bool disconnect()
+	void disconnect()
 	{
 		if (is_connected())
 			asio::post(context, [this]() { socket.close(); });
@@ -91,7 +86,8 @@ public:
 		return socket.is_open();
 	}
 
-	bool send(const Message& message)
+	// async
+	void send(const Message& message)
 	{
 		asio::post(context,
 			[this, message]()

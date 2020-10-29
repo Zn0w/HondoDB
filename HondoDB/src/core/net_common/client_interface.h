@@ -1,14 +1,9 @@
 #pragma once
 
-#include <thread>
-#include <stdint.h>
-
-#include <asio.hpp>
-#include <asio/ts/buffer.hpp>
-#include <asio/ts/internet.hpp>
-
+#include "common.h"
 #include "message.h"
 #include "queue.h"
+#include "connection.h"
 
 
 namespace hondo { namespace net {
