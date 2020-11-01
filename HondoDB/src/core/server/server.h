@@ -17,7 +17,8 @@ protected:
 	{
 		net::Message message;
 		message.header.id = net::MessageType::ServerAccept;
-		client->send(message);
+		message_client(client, message);
+		//client->send(message);
 		// let server interface accept the client
 		return true;
 	}
@@ -31,6 +32,10 @@ protected:
 	{
 		switch (message.header.id)
 		{
+			case net::MessageType::Authenticate:
+			{
+				std::cout << "Server: auth " << client->get_id() << std::endl;
+			} break;
 			case net::MessageType::Rename:
 			{
 				// rename the client (to do)

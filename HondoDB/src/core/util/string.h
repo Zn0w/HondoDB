@@ -38,6 +38,8 @@ public:
 
 	const char* c_string();
 
+	char* raw();
+
 	char at(unsigned int position);
 
 	void put_at(char c, unsigned int position);

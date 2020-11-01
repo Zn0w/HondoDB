@@ -18,20 +18,25 @@ String::String(unsigned int new_length)
 {
 	memory = (char*) malloc(sizeof(char) * (new_length + 1));
 	if (memory)
+	{
 		length = new_length;
+		memset(memory, '\0', length + 1);
+	}
 	else
 		length = 0;
-	memset(memory, '\0', length + 1);
 }
 
 String::String(const String& string)
 {
 	memory = (char*)malloc(sizeof(char) * (string.length + 1));
 	if (memory)
+	{
 		length = string.length;
+		if (string.memory)
+			memcpy(memory, string.memory, length + 1);
+	}
 	else
 		length = 0;
-	memcpy(memory, string.memory, length + 1);
 }
 
 String::~String()
@@ -75,6 +80,11 @@ bool String::contains(String string)
 }
 
 const char* String::c_string()
+{
+	return memory;
+}
+
+char* String::raw()
 {
 	return memory;
 }

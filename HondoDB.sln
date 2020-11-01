@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HondoDB", "HondoDB\HondoDB.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerStarter", "ServerStarter\ServerStarter.vcxproj", "{E6954072-D95E-44CE-AA87-45D52CA6A47A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientStarter", "ClientStarter\ClientStarter.vcxproj", "{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{E6954072-D95E-44CE-AA87-45D52CA6A47A}.Release|x64.Build.0 = Release|x64
 		{E6954072-D95E-44CE-AA87-45D52CA6A47A}.Release|x86.ActiveCfg = Release|Win32
 		{E6954072-D95E-44CE-AA87-45D52CA6A47A}.Release|x86.Build.0 = Release|Win32
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Debug|x64.ActiveCfg = Debug|x64
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Debug|x64.Build.0 = Debug|x64
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Debug|x86.ActiveCfg = Debug|Win32
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Debug|x86.Build.0 = Debug|Win32
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Release|x64.ActiveCfg = Release|x64
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Release|x64.Build.0 = Release|x64
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Release|x86.ActiveCfg = Release|Win32
+		{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

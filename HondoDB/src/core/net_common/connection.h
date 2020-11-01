@@ -118,7 +118,9 @@ private:
 				{
 					if (message_temporary_in.header.size > 0)
 					{
-						message_temporary_in.body.resize(message_temporary_in.header.size);
+						//message_temporary_in.body.resize(message_temporary_in.header.size);
+						//message_temporary_in.body = util::String(message_temporary_in.header.size);
+						message_temporary_in.body.reserve(message_temporary_in.header.size);
 						read_body();
 					}
 					else
@@ -138,7 +140,9 @@ private:
 	// async
 	void read_body()
 	{
-		asio::async_read(socket, asio::buffer(message_temporary_in.body.data(), message_temporary_in.body.size()),
+		asio::async_read(socket, asio::buffer(//message_temporary_in.body.data(), message_temporary_in.body.size()),
+			//message_temporary_in.body.raw(), message_temporary_in.body.get_length()),
+			message_temporary_in.body.data(), message_temporary_in.body.size()),
 			[this](std::error_code ec, size_t length)
 			{
 				if (!ec)
@@ -189,7 +193,9 @@ private:
 	// async
 	void write_body()
 	{
-		asio::async_write(socket, asio::buffer(messages_out.front().body.data(), messages_out.front().body.size()),
+		asio::async_write(socket, asio::buffer(//messages_out.front().body.data(), messages_out.front().body.size()),
+			//message_temporary_in.body.raw(), message_temporary_in.body.get_length()),
+			message_temporary_in.body.data(), message_temporary_in.body.size()),
 			[this](std::error_code ec, size_t length)
 			{
 				if (!ec)

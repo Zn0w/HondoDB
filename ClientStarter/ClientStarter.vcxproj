@@ -20,32 +20,32 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{C5E07C84-BFEC-4A21-9F00-3FD08DFE909D}</ProjectGuid>
-    <RootNamespace>HondoDB</RootNamespace>
+    <ProjectGuid>{3F319BCF-9DBD-4F59-98F8-D5FAF020A9D1}</ProjectGuid>
+    <RootNamespace>ClientStarter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,20 +70,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)\bin\Client-$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\Client-$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)\bin\Client-$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\Client-$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)\bin\Client-$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\Client-$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)\obj\$(Configuration)-$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)\bin\Client-$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\Client-$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,7 +91,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;D:\work\projects\HondoDB\HondoDB\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
@@ -102,7 +102,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;D:\work\projects\HondoDB\HondoDB\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
@@ -115,7 +115,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;D:\work\projects\HondoDB\HondoDB\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
@@ -132,7 +132,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\work\projects\HondoDB\dependencies\asio-1.12.2\include;D:\work\projects\HondoDB\HondoDB\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SILENCE_CXX17_ALLOCATOR_VOID_DEPRECATION_WARNING</PreprocessorDefinitions>
     </ClCompile>
@@ -142,27 +142,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\api\collection.cpp" />
-    <ClCompile Include="src\core\api\database.cpp" />
-    <ClCompile Include="src\core\server\server.h" />
-    <ClCompile Include="src\core\storage_engine\storage.cpp" />
-    <ClCompile Include="src\core\util\string.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\api\api.h" />
-    <ClInclude Include="src\core\api\collection.h" />
-    <ClInclude Include="src\core\api\connection.h" />
-    <ClInclude Include="src\core\api\database.h" />
-    <ClInclude Include="src\core\item\item.h" />
-    <ClInclude Include="src\core\client\client.h" />
-    <ClInclude Include="src\core\net_common\client_interface.h" />
-    <ClInclude Include="src\core\net_common\common.h" />
-    <ClInclude Include="src\core\net_common\connection.h" />
-    <ClInclude Include="src\core\net_common\message.h" />
-    <ClInclude Include="src\core\net_common\queue.h" />
-    <ClInclude Include="src\core\net_common\server_interface.h" />
-    <ClInclude Include="src\core\storage_engine\storage.h" />
-    <ClInclude Include="src\core\util\string.h" />
+    <ProjectReference Include="..\HondoDB\HondoDB.vcxproj">
+      <Project>{c5e07c84-bfec-4a21-9f00-3fd08dfe909d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

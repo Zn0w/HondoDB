@@ -72,18 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)\bin\Server-$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\obj\Server-$(Configuration)-$(Platform)\</IntDir>
+    <IncludePath>D:\work\projects\HondoDB\HondoDB\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\bin\Server-$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\obj\Server-$(Configuration)-$(Platform)\</IntDir>
+    <IncludePath>D:\work\projects\HondoDB\HondoDB\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\bin\Server-$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\obj\Server-$(Configuration)-$(Platform)\</IntDir>
+    <IncludePath>D:\work\projects\HondoDB\HondoDB\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\bin\Server-$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)\obj\Server-$(Configuration)-$(Platform)\</IntDir>
+    <IncludePath>D:\work\projects\HondoDB\HondoDB\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,6 +147,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HondoDB\HondoDB.vcxproj">
+      <Project>{c5e07c84-bfec-4a21-9f00-3fd08dfe909d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,6 +8,9 @@ namespace hondo { namespace net {
 enum MessageType
 {
 	ServerAccept,	// to let client know it's been accepted
+	ServerAuthFail,	// to let client know that authentication failed
+
+	Authenticate,	// authenticate as a user
 	
 	Rename,			// request to rename db or collection
 	
@@ -31,7 +34,8 @@ struct MessageHeader
 struct Message
 {
 	MessageHeader header;
-	std::vector<uint8_t> body;
+	//std::vector<uint8_t> body;
+	std::string body;
 
 
 	// returns size of entire message in bytes

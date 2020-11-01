@@ -48,6 +48,7 @@ public:
 		}
 
 		std::cout << "Server: has started!" << std::endl;
+		return true;
 	}
 
 	void stop()
