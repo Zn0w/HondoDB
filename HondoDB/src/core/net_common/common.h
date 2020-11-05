@@ -7,6 +7,7 @@
 #include <deque>
 #include <thread>
 #include <iostream>
+#include <string>
 
 #define ASIO_STANDALONE
 

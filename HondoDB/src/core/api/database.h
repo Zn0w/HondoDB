@@ -17,10 +17,10 @@ private:
 public:
 	HondoDB();	// set up a temporary db in computer memory
 	HondoDB(Connection c);
-	HondoDB(util::String address, util::String port, util::String user, util::String password, util::String db_name);
+	HondoDB(std::string address, std::string port, std::string user, std::string password, std::string db_name);
 	~HondoDB();
 	
-	Collection get(util::String name);
+	Collection get(std::string name);
 };
 
 }

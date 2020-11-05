@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../util/string.h"
+#include <string>
 
 
 namespace hondo {
@@ -33,7 +33,7 @@ struct Item
 	ItemType type;
 
 	// the item's name if it is a property of object
-	util::String name;
+	std::string name;
 
 	// if type == Number, integer part of number, if 
 	int value_int;
@@ -42,7 +42,7 @@ struct Item
 	double value_number;
 
 	// if type == String, the item's string
-	util::String value_string;
+	std::string value_string;
 };
 
 }

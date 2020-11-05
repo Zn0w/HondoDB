@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "../util/string.h"
+#include <string>
 
 #include "../item/item.h"
 
@@ -16,12 +16,12 @@ namespace hondo {
 
 class Collection
 {
-	util::String name;
+	std::string name;
 	Connection* connection;
 
 
 public:
-	Collection(Connection* s_connection, util::String s_name);
+	Collection(Connection* s_connection, std::string s_name);
 	~Collection();
 
 	Item create();

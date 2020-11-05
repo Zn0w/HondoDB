@@ -12,7 +12,7 @@ HondoDB::HondoDB(Connection c)
 	
 }
 
-HondoDB::HondoDB(util::String address, util::String port, util::String user, util::String password, util::String db_name)
+HondoDB::HondoDB(std::string address, std::string port, std::string user, std::string password, std::string db_name)
 	: connection(address, port, user, password, db_name)
 {
 	
@@ -23,7 +23,7 @@ HondoDB::~HondoDB()
 	
 }
 
-Collection HondoDB::get(util::String name)
+Collection HondoDB::get(std::string name)
 {
 	return Collection(&connection, name);
 }

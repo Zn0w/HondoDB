@@ -111,15 +111,13 @@ private:
 	// async
 	void read_header()
 	{
-		asio::async_read(socket, asio::buffer(&message_temporary_in.header, sizeof(MessageHeader)),
+		asio::async_read(socket, asio::buffer(&message_temporary_in.header.size, sizeof(MessageHeader)),
 			[this](std::error_code ec, size_t length)
 			{
 				if (!ec)
 				{
 					if (message_temporary_in.header.size > 0)
 					{
-						//message_temporary_in.body.resize(message_temporary_in.header.size);
-						//message_temporary_in.body = util::String(message_temporary_in.header.size);
 						message_temporary_in.body.reserve(message_temporary_in.header.size);
 						read_body();
 					}

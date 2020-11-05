@@ -3,7 +3,7 @@
 
 namespace hondo {
 
-/*std::string StorageEngine::get_file_contents(util::String filename)
+/*std::string StorageEngine::get_file_contents(std::string filename)
 {
 	std::FILE *fp = std::fopen(filename, "rb");
 	if (fp)

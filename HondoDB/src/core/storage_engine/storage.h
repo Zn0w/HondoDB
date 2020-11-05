@@ -4,20 +4,18 @@
 #include <cstdio>
 #include <cerrno>
 
-#include "../util/string.h"
-
 
 namespace hondo {
 
 struct StorageEngine
 {
-	util::String root_directory;
-	util::String db_directory;
+	std::string root_directory;
+	std::string db_directory;
 
-	StorageEngine(util::String root_directory, util::String db_directory);
+	StorageEngine(std::string root_directory, std::string db_directory);
 	~StorageEngine();
 
-	util::String get_file_contents(util::String filename);
+	std::string get_file_contents(std::string filename);
 };
 
 }

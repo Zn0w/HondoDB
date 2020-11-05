@@ -34,7 +34,6 @@ struct MessageHeader
 struct Message
 {
 	MessageHeader header;
-	//std::vector<uint8_t> body;
 	std::string body;
 
 

@@ -1,19 +1,19 @@
 #pragma once
 
-#include "../util/string.h"
+#include <string>
 
 
 namespace hondo {
 
 struct Connection
 {
-	util::String address;
-	util::String port;
-	util::String user;
-	util::String password;
-	util::String db_name;
+	std::string address;
+	std::string port;
+	std::string user;
+	std::string password;
+	std::string db_name;
 
-	Connection(util::String s_address, util::String s_port, util::String s_user, util::String s_password, util::String s_db_name)
+	Connection(std::string s_address, std::string s_port, std::string s_user, std::string s_password, std::string s_db_name)
 		: address(s_address), port(s_port), user(s_user), password(s_password), db_name(s_db_name)
 	{}
 };

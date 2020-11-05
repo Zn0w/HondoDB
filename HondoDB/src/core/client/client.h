@@ -10,12 +10,12 @@ namespace hondo {
 class Client : public net::ClientInterface
 {
 protected:
-	util::String username;
-	util::String password;
+	std::string username;
+	std::string password;
 
 
 public:
-	Client(util::String s_username, util::String s_password)
+	Client(std::string s_username, std::string s_password)
 		: username(s_username), password(s_password)
 	{}
 	

@@ -3,7 +3,7 @@
 
 namespace hondo {
 
-Collection::Collection(Connection* s_connection, util::String s_name)
+Collection::Collection(Connection* s_connection, std::string s_name)
 {}
 
 Collection::~Collection()
