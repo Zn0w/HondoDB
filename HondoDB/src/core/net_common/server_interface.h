@@ -14,12 +14,9 @@ protected:
 	asio::io_context context;
 	std::thread context_thread;
 	asio::ip::tcp::acceptor acceptor;
-	
-	Queue<OwnedMessage> messages_in;
-
 	std::deque<std::shared_ptr<Connection>> connections;
+	std::deque<OwnedMessage> messages_in;
 
-	// clients will be identified by ID
 	uint32_t id_counter = 10000;
 
 
@@ -65,36 +62,35 @@ public:
 	{
 		acceptor.async_accept(
 			[this](std::error_code ec, asio::ip::tcp::socket socket)
+		{
+			if (!ec)
 			{
-				if (!ec)
+				std::cout << "Server: New connection: " << socket.remote_endpoint() << std::endl;
+
+				std::shared_ptr<Connection> new_connection = std::make_shared<Connection>(
+					context, std::move(socket), messages_in
+				);
+
+				if (on_client_connect(new_connection))
 				{
-					std::cout << "Server: New connection: " << socket.remote_endpoint() << std::endl;
+					connections.push_back(std::move(new_connection));
+					connections.back()->connect_to_client(id_counter++);
 
-					std::shared_ptr<Connection> new_connection = std::make_shared<Connection>(
-						Connection::owner::server,
-						context, std::move(socket), messages_in
-					);
-
-					if (on_client_connect(new_connection))
-					{
-						connections.push_back(std::move(new_connection));
-						connections.back()->connect_to_client(id_counter++);
-
-						std::cout << connections.back()->get_id() << ": Connection approved" << std::endl;
-					}
-					else
-					{
-						std::cout << "Server: Connection denied" << std::endl;
-					}
+					std::cout << connections.back()->get_id() << ": Connection approved" << std::endl;
 				}
 				else
 				{
-					std::cout << "Server: New connection error: " << ec.message() << std::endl;
+					std::cout << "Server: Connection denied" << std::endl;
 				}
-
-				// again simply wait for another connection
-				wait_for_client_connection();
 			}
+			else
+			{
+				std::cout << "Server: New connection error: " << ec.message() << std::endl;
+			}
+
+			// again simply wait for another connection
+			wait_for_client_connection();
+		}
 		);
 	}
 
@@ -112,36 +108,13 @@ public:
 		}
 	}
 
-	void message_all_clients(const Message& message, std::shared_ptr<Connection> ignore_client = nullptr)
-	{
-		bool invalid_user_exists = false;
-		
-		for (auto& client : connections)
-		{
-			if (client && client->is_connected())
-			{
-				if (client != ignore_client)
-					client->send(message);
-			}
-			else
-			{
-				on_client_disconnect(client);
-				client.reset();
-				invalid_user_exists = true;
-			}
-		}
-
-		// erase function is costly, so instead of removing null clients one by one, remove them all at once at the end
-		if (invalid_user_exists)
-			connections.erase(std::remove(connections.begin(), connections.end(), nullptr), connections.end());
-	}
-
 	void update(size_t max_messages = -1)
 	{
 		size_t message_count = 0;
 		for (size_t message_count = 0; message_count < max_messages && !messages_in.empty(); message_count++)
 		{
-			auto message = messages_in.pop_front();
+			auto message = std::move(messages_in.front());
+			messages_in.pop_front();
 			on_message(message.remote, message.message);
 		}
 	}
@@ -153,14 +126,10 @@ protected:
 	}
 
 	virtual void on_client_disconnect(std::shared_ptr<Connection> client)
-	{
-		
-	}
+	{}
 
 	virtual void on_message(std::shared_ptr<Connection> client, const Message& message)
-	{
-		
-	}
+	{}
 };
 
 } }

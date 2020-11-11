@@ -8,18 +8,14 @@
 
 namespace hondo { namespace net {
 
-struct ClientInterface
+class ClientInterface
 {
-protected:
-	// asio context handles the data transfer
+private:
 	asio::io_context context;
 	std::thread context_thread;
 	asio::ip::tcp::socket socket;
 	std::unique_ptr<Connection> connection;
-
-private:
-	// a thread safe queue for incoming messages from server
-	Queue<OwnedMessage> messages_in;
+	std::deque<OwnedMessage> messages_in;
 
 
 public:
@@ -31,15 +27,15 @@ public:
 	{
 		disconnect();
 	}
-	
+
 	bool connect(const std::string& host, const uint16_t port)
 	{
 		try
 		{
 			asio::ip::tcp::resolver resolver(context);
 			asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
-			
-			connection = std::make_unique<Connection>(Connection::owner::client, context, asio::ip::tcp::socket(context), messages_in);
+
+			connection = std::make_unique<Connection>(context, asio::ip::tcp::socket(context), messages_in);
 			connection->connect_to_server(endpoints);
 
 			context_thread = std::thread([this]() { context.run(); });
@@ -49,7 +45,7 @@ public:
 			std::cerr << "Client exception: " << e.what() << std::endl;
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -75,7 +71,7 @@ public:
 			return false;
 	}
 
-	Queue<OwnedMessage>& incoming()
+	std::deque<OwnedMessage>& incoming()
 	{
 		return messages_in;
 	}

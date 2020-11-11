@@ -20,6 +20,7 @@ protected:
 		message_client(client, message);
 		//client->send(message);
 		// let server interface accept the client
+		std::cout << "Server: on client connect" << std::endl;
 		return true;
 	}
 
