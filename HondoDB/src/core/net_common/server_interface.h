@@ -10,19 +10,15 @@ namespace hondo { namespace net {
 
 class ServerInterface
 {
-protected:
-	asio::io_context context;
-	std::thread context_thread;
+private:
+	asio::io_context io_context;
 	asio::ip::tcp::acceptor acceptor;
-	std::deque<std::shared_ptr<Connection>> connections;
-	std::deque<OwnedMessage> messages_in;
-
-	uint32_t id_counter = 10000;
+	std::vector<std::shared_ptr<Connection>> connections;
 
 
 public:
 	ServerInterface(uint16_t port)
-		: acceptor(context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
+		: acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 13))
 	{}
 
 	virtual ~ServerInterface()
@@ -30,31 +26,23 @@ public:
 		stop();
 	}
 
-	bool start()
+	void start()
 	{
 		try
 		{
 			wait_for_client_connection();
 
-			context_thread = std::thread([this]() { context.run(); });
+			io_context.run();
 		}
 		catch (std::exception& e)
 		{
-			std::cerr << "Server: Exception: " << e.what() << std::endl;
-			return false;
+			std::cerr << e.what() << std::endl;
 		}
-
-		std::cout << "Server: has started!" << std::endl;
-		return true;
 	}
 
 	void stop()
 	{
-		context.stop();
-		if (context_thread.joinable())
-			context_thread.join();
-
-		std::cout << "Server: has stopped!" << std::endl;
+		io_context.stop();
 	}
 
 	// async
@@ -65,58 +53,16 @@ public:
 		{
 			if (!ec)
 			{
-				std::cout << "Server: New connection: " << socket.remote_endpoint() << std::endl;
+				std::shared_ptr<Connection> new_connection = std::make_shared<Connection>(io_context, std::move(socket));
+				new_connection->greet();
 
-				std::shared_ptr<Connection> new_connection = std::make_shared<Connection>(
-					context, std::move(socket), messages_in
-				);
+				connections.push_back(new_connection);
 
-				if (on_client_connect(new_connection))
-				{
-					connections.push_back(std::move(new_connection));
-					connections.back()->connect_to_client(id_counter++);
-
-					std::cout << connections.back()->get_id() << ": Connection approved" << std::endl;
-				}
-				else
-				{
-					std::cout << "Server: Connection denied" << std::endl;
-				}
-			}
-			else
-			{
-				std::cout << "Server: New connection error: " << ec.message() << std::endl;
+				std::cout << "client connected!" << std::endl;
 			}
 
-			// again simply wait for another connection
 			wait_for_client_connection();
-		}
-		);
-	}
-
-	void message_client(std::shared_ptr<Connection> client, const Message& message)
-	{
-		if (client && client->is_connected())
-		{
-			client->send(message);
-		}
-		else
-		{
-			on_client_disconnect(client);
-			client.reset();
-			connections.erase(std::remove(connections.begin(), connections.end(), client), connections.end());
-		}
-	}
-
-	void update(size_t max_messages = -1)
-	{
-		size_t message_count = 0;
-		for (size_t message_count = 0; message_count < max_messages && !messages_in.empty(); message_count++)
-		{
-			auto message = std::move(messages_in.front());
-			messages_in.pop_front();
-			on_message(message.remote, message.message);
-		}
+		});
 	}
 
 protected:

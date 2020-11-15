@@ -3,7 +3,7 @@
 #include "../net_common/server_interface.h"
 
 
-namespace hondo {
+/*namespace hondo {
 
 class Server : public net::ServerInterface
 {
@@ -45,4 +45,4 @@ protected:
 	}
 };
 
-}
+}*/

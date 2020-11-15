@@ -6,7 +6,7 @@
 #include "connection.h"
 
 
-namespace hondo { namespace net {
+/*namespace hondo { namespace net {
 
 class ClientInterface
 {
@@ -77,4 +77,4 @@ public:
 	}
 };
 
-} }
+} }*/
