@@ -26,21 +26,31 @@ int main(int argc, char* argv[])
 		tcp::socket socket(io_context);
 		asio::connect(socket, endpoints);
 
-		for (;;)
-		{
-			char buf[256];
-			asio::error_code error;
+		char buffer[256];
+		bool done = false;
 
-			size_t len = socket.read_some(asio::buffer(buf, 256), error);
+		asio::async_read(socket, asio::buffer(buffer, 256), asio::transfer_at_least(1),
+			[&](std::error_code ec, size_t length)
+			{
+				if (!ec)
+				{
+					std::cout << "Server: " << buffer << std::endl;
+				}
+				else
+				{
+					std::cout << "read fail" << std::endl;
+					socket.close();
+				}
 
-			if (error == asio::error::eof)
-				break; // Connection closed cleanly by peer.
-			else if (error)
-				throw asio::system_error(error); // Some other error.
+				done = true;
+			}
+		);
 
-			std::cout << "Server: ";
-			std::cout.write(buf, len);
-		}
+		io_context.run();
+		
+		while (!done);
+
+		io_context.stop();
 	}
 	catch (std::exception& e)
 	{
