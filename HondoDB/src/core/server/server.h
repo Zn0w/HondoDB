@@ -21,9 +21,7 @@ namespace hondo {
 	{
 	public:
 		Server(uint16_t port) : olc::net::server_interface<MessageType>(port)
-		{
-
-		}
+		{}
 
 	protected:
 		virtual bool OnClientConnect(std::shared_ptr<olc::net::connection<MessageType>> client)
@@ -45,6 +43,21 @@ namespace hondo {
 		{
 			switch (msg.header.id)
 			{
+			case MessageType::Authenticate:
+			{
+				std::cout << "[" << client->GetID() << "]: Authenticate\n";
+
+				// TODO : look up if user with such login and password exists
+				
+				olc::net::message<MessageType> msg;
+				msg.header.id = MessageType::ServerMessage;
+				// TODO : send json response, e.g.
+				//msg << "{ result : 'accept', note : 'all good' }";
+
+				client->Send(msg);
+			}
+			break;
+			
 			case MessageType::ServerPing:
 			{
 				std::cout << "[" << client->GetID() << "]: Server Ping\n";

@@ -10,6 +10,7 @@ namespace hondo {
 class HondoDB
 {
 private:
+	Client client;
 	Connection connection;
 	std::vector<Collection> collections;
 
@@ -17,7 +18,6 @@ private:
 public:
 	HondoDB();	// set up a temporary db in computer memory
 	HondoDB(Connection c);
-	HondoDB(std::string address, std::string port, std::string user, std::string password, std::string db_name);
 	~HondoDB();
 	
 	Collection get(std::string name);

@@ -20,6 +20,14 @@ namespace hondo {
 	class Client : public olc::net::client_interface<MessageType>
 	{
 	public:
+		void authenticate(std::string user, std::string password, std::string db_name)
+		{
+			olc::net::message<MessageType> msg;
+			msg.header.id = MessageType::Authenticate;
+			msg << user << password << db_name;
+			Send(msg);
+		}
+		
 		void ping_server()
 		{
 			olc::net::message<MessageType> msg;

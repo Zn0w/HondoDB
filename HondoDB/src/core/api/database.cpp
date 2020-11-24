@@ -9,13 +9,44 @@ namespace hondo {
 HondoDB::HondoDB(Connection c)
 	: connection(c)
 {
-	
-}
+	if (client.Connect(connection.address, std::stoi(connection.port)))
+	{
+		client.authenticate(connection.user, connection.password, connection.db_name);
 
-HondoDB::HondoDB(std::string address, std::string port, std::string user, std::string password, std::string db_name)
-	: connection(address, port, user, password, db_name)
-{
-	
+		bool quit = false;
+		while (quit)
+		{
+			if (client.IsConnected())
+			{
+				if (!client.Incoming().empty())
+				{
+					auto msg = client.Incoming().pop_front().msg;
+
+					switch (msg.header.id)
+					{
+					case hondo::MessageType::ServerAccept:
+					{
+						std::cout << "Server Accepted Connection\n";
+					}
+					break;
+
+					case hondo::MessageType::ServerDeny:
+					{
+						std::cout << "Server Rejected Connection\n";
+					}
+					break;
+					}
+				}
+			}
+			else
+			{
+				std::cout << "Server Down\n";
+				quit = true;
+			}
+		}
+	}
+	else
+		;// TODO
 }
 
 HondoDB::~HondoDB()

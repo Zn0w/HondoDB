@@ -7,7 +7,8 @@
 
 #include <string>
 
-#include "../item/item.h"
+#include "../json/item.h"
+#include "../client/client.h"
 
 #include "connection.h"
 
