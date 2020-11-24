@@ -1,29 +1,43 @@
 #pragma once
 
-#include <iostream>
-
-#include "../net_common/client_interface.h"
+#include "../vendor/olc_net/olc_net.h"
 
 
-/*namespace hondo {
+namespace hondo {
 
-class Client : public net::ClientInterface
-{
-protected:
-	std::string username;
-	std::string password;
-
-
-public:
-	Client(std::string s_username, std::string s_password)
-		: username(s_username), password(s_password)
-	{}
-	
-	void authenticate()
+	enum MessageType
 	{
-		net::Message message;
-		message.header.id = net::MessageType::Authenticate;
-	}
-};
+		ServerAccept,
+		ServerDeny,
+		ServerMessage,
+		ServerPing,
+		MessageAll,
+		Authenticate,
+		DBQuery,
+		DBQueryResult
+	};
+	
+	class Client : public olc::net::client_interface<MessageType>
+	{
+	public:
+		void ping_server()
+		{
+			olc::net::message<MessageType> msg;
+			msg.header.id = MessageType::ServerPing;
 
-}*/
+			// Caution with this...
+			std::chrono::system_clock::time_point timeNow = std::chrono::system_clock::now();
+
+			msg << timeNow;
+			Send(msg);
+		}
+
+		void message_all()
+		{
+			olc::net::message<MessageType> msg;
+			msg.header.id = MessageType::MessageAll;
+			Send(msg);
+		}
+	};
+
+}

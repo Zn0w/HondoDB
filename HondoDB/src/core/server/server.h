@@ -1,48 +1,73 @@
 #pragma once
 
-#include "../net_common/server_interface.h"
+#include "../vendor/olc_net/olc_net.h"
 
 
-/*namespace hondo {
+namespace hondo {
 
-class Server : public net::ServerInterface
-{
-public:
-	Server(uint16_t port)
-		: ServerInterface(port)
-	{}
-
-protected:
-	virtual bool on_client_connect(std::shared_ptr<net::Connection> client)
+	enum MessageType
 	{
-		net::Message message;
-		message.header.id = net::MessageType::ServerAccept;
-		message_client(client, message);
-		//client->send(message);
-		// let server interface accept the client
-		std::cout << "Server: on client connect" << std::endl;
-		return true;
-	}
-
-	virtual void on_client_disconnect(std::shared_ptr<net::Connection> client)
+		ServerAccept,
+		ServerDeny,
+		ServerMessage,
+		ServerPing,
+		MessageAll,
+		Authenticate,
+		DBQuery,
+		DBQueryResult
+	};
+	
+	class Server : public olc::net::server_interface<MessageType>
 	{
-		std::cout << "Server: Removing client " << client->get_id() << std::endl;
-	}
-
-	virtual void on_message(std::shared_ptr<net::Connection> client, const net::Message& message)
-	{
-		switch (message.header.id)
+	public:
+		Server(uint16_t port) : olc::net::server_interface<MessageType>(port)
 		{
-			case net::MessageType::Authenticate:
-			{
-				std::cout << "Server: auth " << client->get_id() << std::endl;
-			} break;
-			case net::MessageType::Rename:
-			{
-				// rename the client (to do)
-			} break;
-		}
-	}
-};
 
-}*/
+		}
+
+	protected:
+		virtual bool OnClientConnect(std::shared_ptr<olc::net::connection<MessageType>> client)
+		{
+			olc::net::message<MessageType> msg;
+			msg.header.id = MessageType::ServerAccept;
+			client->Send(msg);
+			return true;
+		}
+
+		// Called when a client appears to have disconnected
+		virtual void OnClientDisconnect(std::shared_ptr<olc::net::connection<MessageType>> client)
+		{
+			std::cout << "Removing client [" << client->GetID() << "]\n";
+		}
+
+		// Called when a message arrives
+		virtual void OnMessage(std::shared_ptr<olc::net::connection<MessageType>> client, olc::net::message<MessageType>& msg)
+		{
+			switch (msg.header.id)
+			{
+			case MessageType::ServerPing:
+			{
+				std::cout << "[" << client->GetID() << "]: Server Ping\n";
+
+				// Simply bounce message back to client
+				client->Send(msg);
+			}
+			break;
+
+			case MessageType::MessageAll:
+			{
+				std::cout << "[" << client->GetID() << "]: Message All\n";
+
+				// Construct a new message and send it to all clients
+				olc::net::message<MessageType> msg;
+				msg.header.id = MessageType::ServerMessage;
+				msg << client->GetID();
+				MessageAllClients(msg, client);
+
+			}
+			break;
+			}
+		}
+	};
+
+}
