@@ -10,15 +10,16 @@ namespace hondo { namespace net {
 
 class ServerInterface
 {
-private:
+protected:
 	asio::io_context io_context;
 	asio::ip::tcp::acceptor acceptor;
 	std::vector<std::shared_ptr<Connection>> connections;
+	std::vector<std::string> in;
 
 
 public:
 	ServerInterface(uint16_t port)
-		: acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), 13))
+		: acceptor(io_context, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
 	{}
 
 	virtual ~ServerInterface()
@@ -53,7 +54,7 @@ public:
 		{
 			if (!ec)
 			{
-				std::shared_ptr<Connection> new_connection = std::make_shared<Connection>(io_context, std::move(socket));
+				std::shared_ptr<Connection> new_connection = std::make_shared<Connection>(io_context, std::move(socket), in);
 				new_connection->greet();
 
 				connections.push_back(new_connection);

@@ -6,21 +6,18 @@
 #include "connection.h"
 
 
-/*namespace hondo { namespace net {
+namespace hondo { namespace net {
 
 class ClientInterface
 {
-private:
+protected:
 	asio::io_context context;
-	std::thread context_thread;
-	asio::ip::tcp::socket socket;
 	std::unique_ptr<Connection> connection;
-	std::deque<OwnedMessage> messages_in;
+	std::vector<std::string> in;
 
 
 public:
 	ClientInterface()
-		: socket(context)
 	{}
 
 	virtual ~ClientInterface()
@@ -35,10 +32,23 @@ public:
 			asio::ip::tcp::resolver resolver(context);
 			asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
 
-			connection = std::make_unique<Connection>(context, asio::ip::tcp::socket(context), messages_in);
-			connection->connect_to_server(endpoints);
+			asio::ip::tcp::socket socket(context);
 
-			context_thread = std::thread([this]() { context.run(); });
+			
+			asio::async_connect(socket, endpoints,
+				[&, this](std::error_code ec, asio::ip::tcp::endpoint endpoint)
+				{
+					if (!ec)
+					{
+						connection = std::make_unique<Connection>(context, std::move(socket), in);
+						connection->read();
+					}
+				}
+			);
+
+			context.run();
+
+			return true;
 		}
 		catch (std::exception& e)
 		{
@@ -51,30 +61,24 @@ public:
 
 	void disconnect()
 	{
-		if (is_connected())
+		/*if (is_connected())
 		{
 			connection->disconnect();
-		}
+		}*/
 
 		context.stop();
-		if (context_thread.joinable())
-			context_thread.join();
-
 		connection.release();
 	}
 
-	bool is_connected()
+	void update()
 	{
-		if (connection)
-			return connection->is_connected();
-		else
-			return false;
-	}
-
-	std::deque<OwnedMessage>& incoming()
-	{
-		return messages_in;
+		if (!in.empty())
+		{
+			for (std::string message : in)
+				std::cout << "Server: " << message << std::endl;
+			in.clear();
+		}
 	}
 };
 
-} }*/
+} }
