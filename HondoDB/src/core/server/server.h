@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../vendor/olc_net/olc_net.h"
+#include "../vendor/cJSON/cJSON.h"
 
 
 namespace hondo {
@@ -49,12 +50,17 @@ namespace hondo {
 
 				// TODO : look up if user with such login and password exists
 				
-				olc::net::message<MessageType> msg;
-				msg.header.id = MessageType::ServerMessage;
+				olc::net::message<MessageType> response_msg;
+				msg.header.id = MessageType::ServerAccept;
+				std::string request;
+				//msg >> request;
+				//char* request_str = cJSON_Print(request);
+				std::cout << msg.body.data() << std::endl << std::endl;
+				//cJSON_Delete(request);
 				// TODO : send json response, e.g.
 				//msg << "{ result : 'accept', note : 'all good' }";
 
-				client->Send(msg);
+				client->Send(response_msg);
 			}
 			break;
 			

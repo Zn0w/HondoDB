@@ -12,9 +12,10 @@ HondoDB::HondoDB(Connection c)
 	if (client.Connect(connection.address, std::stoi(connection.port)))
 	{
 		client.authenticate(connection.user, connection.password, connection.db_name);
+		//client.ping_server();
 
 		bool quit = false;
-		while (quit)
+		while (!quit)
 		{
 			if (client.IsConnected())
 			{
@@ -33,6 +34,12 @@ HondoDB::HondoDB(Connection c)
 					case hondo::MessageType::ServerDeny:
 					{
 						std::cout << "Server Rejected Connection\n";
+					}
+					break;
+
+					case hondo::MessageType::ServerPing:
+					{
+						std::cout << "Server Ping!\n";
 					}
 					break;
 					}
