@@ -10,6 +10,8 @@ namespace hondo {
 	{
 		ServerAccept,
 		ServerDeny,
+		ServerAuthSuccess,
+		ServerAuthFailure,
 		ServerMessage,
 		ServerPing,
 		MessageAll,
@@ -47,18 +49,25 @@ namespace hondo {
 			case MessageType::Authenticate:
 			{
 				std::cout << "[" << client->GetID() << "]: Authenticate\n";
+				std::cout << "[" << client->GetID() << "]: Body: " << msg.body << std::endl;
 
 				// TODO : look up if user with such login and password exists
 				
 				olc::net::message<MessageType> response_msg;
-				msg.header.id = MessageType::ServerAccept;
-				std::string request;
+				response_msg.header.id = MessageType::ServerAuthSuccess;
+				//std::string request;
 				//msg >> request;
 				//char* request_str = cJSON_Print(request);
-				std::cout << msg.body.data() << std::endl << std::endl;
+				//std::cout << msg.body.data() << std::endl << std::endl;
 				//cJSON_Delete(request);
 				// TODO : send json response, e.g.
 				//msg << "{ result : 'accept', note : 'all good' }";
+				std::string data = msg.body;
+				std::cout << data << std::endl;
+
+				std::string processed_data = data + "+server append";
+				std::cout << processed_data << std::endl;
+				response_msg << processed_data;
 
 				client->Send(response_msg);
 			}
@@ -78,10 +87,10 @@ namespace hondo {
 				std::cout << "[" << client->GetID() << "]: Message All\n";
 
 				// Construct a new message and send it to all clients
-				olc::net::message<MessageType> msg;
+				/*olc::net::message<MessageType> msg;
 				msg.header.id = MessageType::ServerMessage;
 				msg << client->GetID();
-				MessageAllClients(msg, client);
+				MessageAllClients(msg, client);*/
 
 			}
 			break;

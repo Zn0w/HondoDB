@@ -10,6 +10,8 @@ namespace hondo {
 	{
 		ServerAccept,
 		ServerDeny,
+		ServerAuthSuccess,
+		ServerAuthFailure,
 		ServerMessage,
 		ServerPing,
 		MessageAll,
@@ -35,7 +37,9 @@ namespace hondo {
 				"'}";
 			//cJSON* auth_json = cJSON_Parse(auth_json_str.c_str());
 
-			msg << auth_json_str.c_str();
+			//msg << auth_json_str.c_str();
+			std::string data_to_process = "hey";
+			msg << data_to_process;
 			Send(msg);
 
 			//cJSON_Delete(auth_json);
@@ -43,14 +47,14 @@ namespace hondo {
 		
 		void ping_server()
 		{
-			olc::net::message<MessageType> msg;
+			/*olc::net::message<MessageType> msg;
 			msg.header.id = MessageType::ServerPing;
 
 			// Caution with this...
 			std::chrono::system_clock::time_point timeNow = std::chrono::system_clock::now();
 
 			msg << timeNow;
-			Send(msg);
+			Send(msg);*/
 		}
 
 		void message_all()

@@ -80,7 +80,7 @@ namespace olc
 		{
 			// Header & Body vector
 			message_header<T> header{};
-			std::vector<uint8_t> body;
+			std::string body;
 
 			// returns size of entire message packet in bytes
 			size_t size() const
@@ -102,20 +102,9 @@ namespace olc
 			// Plain Old Data (POD). TLDR: Serialise & Deserialise into/from a vector
 
 			// Pushes any POD-like data into the message buffer
-			template<typename DataType>
-			friend message<T>& operator << (message<T>& msg, const DataType& data)
+			friend message<T>& operator << (message<T>& msg, const std::string& data)
 			{
-				// Check that the type of the data being pushed is trivially copyable
-				static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pushed into vector");
-
-				// Cache current size of vector, as this will be the point we insert the data
-				size_t i = msg.body.size();
-
-				// Resize the vector by the size of the data being pushed
-				msg.body.resize(msg.body.size() + sizeof(DataType));
-
-				// Physically copy the data into the newly allocated vector space
-				std::memcpy(msg.body.data() + i, &data, sizeof(DataType));
+				msg.body = data;
 
 				// Recalculate the message size
 				msg.header.size = msg.size();
@@ -125,20 +114,11 @@ namespace olc
 			}
 
 			// Pulls any POD-like data form the message buffer
-			template<typename DataType>
-			friend message<T>& operator >> (message<T>& msg, DataType& data)
+			friend message<T>& operator >> (message<T>& msg, std::string& data)
 			{
-				// Check that the type of the data being pushed is trivially copyable
-				static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pulled from vector");
+				msg.body = data;
 
-				// Cache the location towards the end of the vector where the pulled data starts
-				size_t i = msg.body.size() - sizeof(DataType);
-
-				// Physically copy the data from the vector into the user variable
-				std::memcpy(&data, msg.body.data() + i, sizeof(DataType));
-
-				// Shrink the vector to remove read bytes, and reset end position
-				msg.body.resize(i);
+				msg.body = "";
 
 				// Recalculate the message size
 				msg.header.size = msg.size();

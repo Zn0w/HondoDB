@@ -27,13 +27,21 @@ HondoDB::HondoDB(Connection c)
 					{
 					case hondo::MessageType::ServerAccept:
 					{
-						std::cout << "Server Accepted Connection\n";
+						std::cout << "Server Accepted Connection. Hooray!\n";
 					}
 					break;
 
 					case hondo::MessageType::ServerDeny:
 					{
 						std::cout << "Server Rejected Connection\n";
+					}
+					break;
+
+					case hondo::MessageType::ServerAuthSuccess:
+					{
+						std::cout << "Successful Auth. Hooray!\n";
+						std::string data_processed_by_server = msg.body;
+						std::cout << data_processed_by_server << std::endl;
 					}
 					break;
 
