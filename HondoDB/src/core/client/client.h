@@ -37,9 +37,9 @@ namespace hondo {
 				"'}";
 			//cJSON* auth_json = cJSON_Parse(auth_json_str.c_str());
 
-			//msg << auth_json_str.c_str();
-			std::string data_to_process = "hey";
-			msg << data_to_process;
+			msg << auth_json_str;
+			//std::string data_to_process = "hey";
+			//msg << data_to_process;
 			Send(msg);
 
 			//cJSON_Delete(auth_json);

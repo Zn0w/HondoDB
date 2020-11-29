@@ -51,23 +51,24 @@ namespace hondo {
 				std::cout << "[" << client->GetID() << "]: Authenticate\n";
 				std::cout << "[" << client->GetID() << "]: Body: " << msg.body << std::endl;
 
-				// TODO : look up if user with such login and password exists
-				
 				olc::net::message<MessageType> response_msg;
-				response_msg.header.id = MessageType::ServerAuthSuccess;
-				//std::string request;
-				//msg >> request;
-				//char* request_str = cJSON_Print(request);
-				//std::cout << msg.body.data() << std::endl << std::endl;
-				//cJSON_Delete(request);
-				// TODO : send json response, e.g.
-				//msg << "{ result : 'accept', note : 'all good' }";
-				std::string data = msg.body;
-				std::cout << data << std::endl;
-
-				std::string processed_data = data + "+server append";
-				std::cout << processed_data << std::endl;
-				response_msg << processed_data;
+				
+				std::string auth_request = msg.body;
+				cJSON* auth_request_json = cJSON_Parse(auth_request.c_str());
+				// TODO : look up if user with such login and password exists
+				if (true)
+					response_msg.header.id = MessageType::ServerAuthSuccess;
+				else
+				{
+					response_msg.header.id = MessageType::ServerAuthFailure;
+					
+					/*cJSON* response_json = cJSON_CreateObject();
+					// TODO : check if response_json is null
+					cJSON* auth_result = cJSON_CreateString("");*/
+					//std::string response = "{'auth_fail_reason':''}";
+					//response_msg << response;
+				}
+				cJSON_Delete(auth_request_json);
 
 				client->Send(response_msg);
 			}

@@ -12,7 +12,6 @@ HondoDB::HondoDB(Connection c)
 	if (client.Connect(connection.address, std::stoi(connection.port)))
 	{
 		client.authenticate(connection.user, connection.password, connection.db_name);
-		//client.ping_server();
 
 		bool quit = false;
 		while (!quit)
@@ -27,27 +26,27 @@ HondoDB::HondoDB(Connection c)
 					{
 					case hondo::MessageType::ServerAccept:
 					{
-						std::cout << "Server Accepted Connection. Hooray!\n";
+						std::cout << "HondoDB Server Accepted Connection" << std::endl;
 					}
 					break;
 
 					case hondo::MessageType::ServerDeny:
 					{
-						std::cout << "Server Rejected Connection\n";
+						std::cout << "HondoDB Server Rejected Connection" << std::endl;
+						quit = true;
 					}
 					break;
 
 					case hondo::MessageType::ServerAuthSuccess:
 					{
-						std::cout << "Successful Auth. Hooray!\n";
-						std::string data_processed_by_server = msg.body;
-						std::cout << data_processed_by_server << std::endl;
+						std::cout << "HondoDB Auth Success" << std::endl;
 					}
 					break;
 
-					case hondo::MessageType::ServerPing:
+					case hondo::MessageType::ServerAuthFailure:
 					{
-						std::cout << "Server Ping!\n";
+						std::cout << "HondoDB Auth Failure" << std::endl;
+						quit = true;
 					}
 					break;
 					}
