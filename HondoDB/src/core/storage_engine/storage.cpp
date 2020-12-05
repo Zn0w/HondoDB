@@ -3,9 +3,9 @@
 
 namespace hondo {
 
-/*std::string StorageEngine::get_file_contents(std::string filename)
+std::string StorageEngine::get_file_contents(std::string filename)
 {
-	std::FILE *fp = std::fopen(filename, "rb");
+	std::FILE *fp = std::fopen(filename.c_str(), "rb");
 	if (fp)
 	{
 		std::string contents;
@@ -17,6 +17,6 @@ namespace hondo {
 		return(contents);
 	}
 	throw(errno);
-}*/
+}
 
 }

@@ -15,7 +15,7 @@ struct StorageEngine
 	StorageEngine(std::string root_directory, std::string db_directory);
 	~StorageEngine();
 
-	std::string get_file_contents(std::string filename);
+	static std::string get_file_contents(std::string filename);
 };
 
 }

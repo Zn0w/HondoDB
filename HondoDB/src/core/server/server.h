@@ -3,6 +3,8 @@
 #include "../vendor/olc_net/olc_net.h"
 #include "../vendor/cJSON/cJSON.h"
 
+#include "../storage_engine/storage.h"
+
 
 namespace hondo {
 
@@ -51,12 +53,62 @@ namespace hondo {
 				std::cout << "[" << client->GetID() << "]: Authenticate\n";
 				std::cout << "[" << client->GetID() << "]: Body: " << msg.body << std::endl;
 
+				std::string users = StorageEngine::get_file_contents("data/meta/users.hondodb");
+				std::string cars = StorageEngine::get_file_contents("data/collections/cars.hondodb");
+
+				std::cout << "[" << client->GetID() << "]: users: " << users << std::endl;
+				std::cout << "[" << client->GetID() << "]: cars: " << cars << std::endl;
+
 				olc::net::message<MessageType> response_msg;
 				
 				std::string auth_request = msg.body;
 				cJSON* auth_request_json = cJSON_Parse(auth_request.c_str());
-				// TODO : look up if user with such login and password exists
-				if (true)
+
+				cJSON* users_json = cJSON_Parse(users.c_str());
+
+				bool user_found = false;
+				bool password_is_right = false;
+				bool has_grant = false;
+				cJSON* user = 0;
+				cJSON_ArrayForEach(user, users_json)
+				{
+					if (user_found)
+						break;
+					
+					cJSON* user_name = cJSON_GetObjectItemCaseSensitive(user, "user");
+					cJSON* user_name_to_find = cJSON_GetObjectItemCaseSensitive(auth_request_json, "user");
+					if (strcmp(user_name->valuestring, user_name_to_find->valuestring) == 0)
+						user_found = true;
+
+					if (user_found)
+					{
+						cJSON* user_password = cJSON_GetObjectItemCaseSensitive(user, "password");
+						cJSON* user_password_to_validate = cJSON_GetObjectItemCaseSensitive(auth_request_json, "password");
+						if (strcmp(user_password->valuestring, user_password_to_validate->valuestring) == 0)
+							password_is_right = true;
+					}
+
+					if (password_is_right)
+					{
+						cJSON* user_grants = cJSON_GetObjectItemCaseSensitive(user, "grant");
+						cJSON* user_grants_to_check = cJSON_GetObjectItemCaseSensitive(auth_request_json, "grant");
+						
+						cJSON* grant = 0;
+						cJSON_ArrayForEach(grant, user_grants)
+						{
+							if (strcmp(grant->valuestring, user_grants_to_check->valuestring) == 0)
+							{
+								has_grant = true;
+								break;
+							}
+						}
+					}
+				}
+
+				cJSON_Delete(auth_request_json);
+				cJSON_Delete(users_json);
+				
+				if (user_found && password_is_right && has_grant)
 					response_msg.header.id = MessageType::ServerAuthSuccess;
 				else
 				{
@@ -68,7 +120,6 @@ namespace hondo {
 					//std::string response = "{'auth_fail_reason':''}";
 					//response_msg << response;
 				}
-				cJSON_Delete(auth_request_json);
 
 				client->Send(response_msg);
 			}

@@ -5,6 +5,7 @@
 
 int main()
 {
+	system("dir");
 	hondo::Server server(252525);
 	server.Start();
 

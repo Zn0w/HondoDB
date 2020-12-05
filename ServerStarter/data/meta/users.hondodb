@@ -1,0 +1,5 @@
+{
+	"users" : [
+		{ "user" : "daniil", "password" : "12345", grants : ["cars"] }
+	]
+}
