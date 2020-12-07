@@ -27,22 +27,11 @@ namespace hondo {
 		{
 			olc::net::message<MessageType> msg;
 			msg.header.id = MessageType::Authenticate;
-			
-			//std::cout << "cJSON version: " << cJSON_Version() << std::endl;
 
-			std::string auth_json_str = 
-				"{'user':'" + user + "', " +
-				"'password':'" + password + "', " +
-				"'db_name':'" + db_name + "'" +
-				"'}";
-			//cJSON* auth_json = cJSON_Parse(auth_json_str.c_str());
+			std::string auth_json_str = "{\"user\":\"" + user + "\",\"" + password + "\":\"12345\",\"" + db_name + "\":\"cars\"}";
 
 			msg << auth_json_str;
-			//std::string data_to_process = "hey";
-			//msg << data_to_process;
 			Send(msg);
-
-			//cJSON_Delete(auth_json);
 		}
 		
 		void ping_server()

@@ -69,74 +69,62 @@ namespace hondo {
 				bool password_is_right = false;
 				bool has_grant = false;
 				
+				const char* json = "{\"user\":\"daniil\",\"password\":\"12345\",\"db_name\":\"cars\"}";
+				rapidjson::Document d;
+				d.Parse(json);
+				d.IsObject();
+				
 				std::string auth_request = msg.body;
 				rapidjson::Document auth_request_json;
 				auth_request_json.Parse(auth_request.c_str());
+				auth_request_json.IsObject();
+				auth_request_json["user"].GetString();
+				auth_request_json.HasMember("user");
+				auth_request_json.HasMember("password");
+				auth_request_json.HasMember("db_name");
 
 				request_is_valid = 
 					auth_request_json.HasMember("user") &&
 					auth_request_json.HasMember("password") &&
 					auth_request_json.HasMember("db_name");
 
-				rapidjson::Document users_json;
-				users_json.Parse(users.c_str());
-
-				auto users_array = users_json["users"].GetArray();
-				
-				for (rapidjson::Value::ConstValueIterator i = users_array.Begin(); i != users_array.End(); i++)
+				if (request_is_valid)
 				{
-					if (user_found)
-						break;
-					
-					if (i->HasMember("user"))
-					{
-						auto user = (*i)["user"].GetString();
-					}
-				}
-				
-				/*cJSON* user = 0;
-				cJSON_ArrayForEach(user, users_json)
-				{
-					if (user_found)
-						break;
-					
-					cJSON* user_name = cJSON_GetObjectItemCaseSensitive(user, "user");
-					cJSON* user_name_to_find = cJSON_GetObjectItemCaseSensitive(auth_request_json, "user");
-					if (strcmp(user_name->valuestring, user_name_to_find->valuestring) == 0)
-						user_found = true;
+					rapidjson::Document users_json;
+					users_json.Parse(users.c_str());
 
-					if (user_found)
-					{
-						cJSON* user_password = cJSON_GetObjectItemCaseSensitive(user, "password");
-						cJSON* user_password_to_validate = cJSON_GetObjectItemCaseSensitive(auth_request_json, "password");
-						if (strcmp(user_password->valuestring, user_password_to_validate->valuestring) == 0)
-							password_is_right = true;
-					}
+					auto users_array = users_json["users"].GetArray();
 
-					if (password_is_right)
+					for (rapidjson::Value::ConstValueIterator i = users_array.Begin(); i != users_array.End(); i++)
 					{
-						cJSON* user_grants = cJSON_GetObjectItemCaseSensitive(user, "grant");
-						cJSON* user_grants_to_check = cJSON_GetObjectItemCaseSensitive(auth_request_json, "grant");
-						
-						cJSON* grant = 0;
-						cJSON_ArrayForEach(grant, user_grants)
+						if (user_found)
+							break;
+
+						if (i->HasMember("user"))
 						{
-							if (strcmp(grant->valuestring, user_grants_to_check->valuestring) == 0)
+							if (strcmp((*i)["user"].GetString(), auth_request_json["user"].GetString()) == 0)
+								user_found = true;
+
+							if (user_found && i->HasMember("password"))
 							{
-								has_grant = true;
-								break;
+								if (strcmp((*i)["password"].GetString(), auth_request_json["password"].GetString()) == 0)
+									password_is_right = true;
+							}
+
+							if (password_is_right && i->HasMember("db_name"))
+							{
+								if (strcmp((*i)["password"].GetString(), auth_request_json["password"].GetString()) == 0)
+									has_grant = true;
 							}
 						}
 					}
 				}
-
-				cJSON_Delete(auth_request_json);
-				cJSON_Delete(users_json);*/
 				
-				if (user_found && password_is_right && has_grant)
+				if (request_is_valid && user_found && password_is_right && has_grant)
 					response_msg.header.id = MessageType::ServerAuthSuccess;
 				else
 				{
+					// TODO : add auth_fail_reason
 					response_msg.header.id = MessageType::ServerAuthFailure;
 					
 					/*cJSON* response_json = cJSON_CreateObject();
