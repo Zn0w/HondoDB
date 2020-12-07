@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../vendor/olc_net/olc_net.h"
-#include "../vendor/cJSON/cJSON.h"
+#include "../vendor/rapidjson/rapidjson.h"
 
 
 namespace hondo {
@@ -28,7 +28,7 @@ namespace hondo {
 			olc::net::message<MessageType> msg;
 			msg.header.id = MessageType::Authenticate;
 			
-			std::cout << "cJSON version: " << cJSON_Version() << std::endl;
+			//std::cout << "cJSON version: " << cJSON_Version() << std::endl;
 
 			std::string auth_json_str = 
 				"{'user':'" + user + "', " +

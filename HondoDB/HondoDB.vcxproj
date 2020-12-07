@@ -146,7 +146,6 @@
     <ClCompile Include="src\core\api\database.cpp" />
     <ClCompile Include="src\core\server\server.h" />
     <ClCompile Include="src\core\storage_engine\storage.cpp" />
-    <ClCompile Include="src\core\vendor\cJSON\cJSON.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\api\api.h" />
@@ -156,7 +155,6 @@
     <ClInclude Include="src\core\json\item.h" />
     <ClInclude Include="src\core\client\client.h" />
     <ClInclude Include="src\core\storage_engine\storage.h" />
-    <ClInclude Include="src\core\vendor\cJSON\cJSON.h" />
     <ClInclude Include="src\core\vendor\olc_net\net_client.h" />
     <ClInclude Include="src\core\vendor\olc_net\net_common.h" />
     <ClInclude Include="src\core\vendor\olc_net\net_connection.h" />
@@ -164,6 +162,43 @@
     <ClInclude Include="src\core\vendor\olc_net\net_server.h" />
     <ClInclude Include="src\core\vendor\olc_net\net_tsqueue.h" />
     <ClInclude Include="src\core\vendor\olc_net\olc_net.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\allocators.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\cursorstreamwrapper.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\document.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\encodedstream.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\encodings.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\error\en.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\error\error.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\filereadstream.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\filewritestream.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\fwd.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\biginteger.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\clzll.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\diyfp.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\dtoa.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\ieee754.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\itoa.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\meta.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\pow10.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\regex.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\stack.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\strtod.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\internal\swap.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\istreamwrapper.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\memorybuffer.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\memorystream.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\msinttypes\inttypes.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\msinttypes\stdint.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\ostreamwrapper.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\pointer.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\prettywriter.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\rapidjson.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\reader.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\schema.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\stream.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\stringbuffer.h" />
+    <ClInclude Include="src\core\vendor\rapidjson\writer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

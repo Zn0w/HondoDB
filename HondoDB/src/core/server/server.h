@@ -1,7 +1,10 @@
 #pragma once
 
 #include "../vendor/olc_net/olc_net.h"
-#include "../vendor/cJSON/cJSON.h"
+
+#include "../vendor/rapidjson/document.h"
+#include "../vendor/rapidjson/writer.h"
+#include "../vendor/rapidjson/stringbuffer.h"
 
 #include "../storage_engine/storage.h"
 
@@ -60,16 +63,38 @@ namespace hondo {
 				std::cout << "[" << client->GetID() << "]: cars: " << cars << std::endl;
 
 				olc::net::message<MessageType> response_msg;
-				
-				std::string auth_request = msg.body;
-				cJSON* auth_request_json = cJSON_Parse(auth_request.c_str());
 
-				cJSON* users_json = cJSON_Parse(users.c_str());
-
+				bool request_is_valid = false;
 				bool user_found = false;
 				bool password_is_right = false;
 				bool has_grant = false;
-				cJSON* user = 0;
+				
+				std::string auth_request = msg.body;
+				rapidjson::Document auth_request_json;
+				auth_request_json.Parse(auth_request.c_str());
+
+				request_is_valid = 
+					auth_request_json.HasMember("user") &&
+					auth_request_json.HasMember("password") &&
+					auth_request_json.HasMember("db_name");
+
+				rapidjson::Document users_json;
+				users_json.Parse(users.c_str());
+
+				auto users_array = users_json["users"].GetArray();
+				
+				for (rapidjson::Value::ConstValueIterator i = users_array.Begin(); i != users_array.End(); i++)
+				{
+					if (user_found)
+						break;
+					
+					if (i->HasMember("user"))
+					{
+						auto user = (*i)["user"].GetString();
+					}
+				}
+				
+				/*cJSON* user = 0;
 				cJSON_ArrayForEach(user, users_json)
 				{
 					if (user_found)
@@ -106,7 +131,7 @@ namespace hondo {
 				}
 
 				cJSON_Delete(auth_request_json);
-				cJSON_Delete(users_json);
+				cJSON_Delete(users_json);*/
 				
 				if (user_found && password_is_right && has_grant)
 					response_msg.header.id = MessageType::ServerAuthSuccess;
