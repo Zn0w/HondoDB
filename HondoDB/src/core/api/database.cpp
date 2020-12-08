@@ -46,6 +46,7 @@ HondoDB::HondoDB(Connection c)
 					case hondo::MessageType::ServerAuthFailure:
 					{
 						std::cout << "HondoDB Auth Failure" << std::endl;
+						std::cout << msg.body << std::endl;
 						quit = true;
 					}
 					break;

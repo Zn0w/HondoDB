@@ -78,6 +78,8 @@ namespace hondo {
 					auth_request_json.HasMember("password") &&
 					auth_request_json.HasMember("db_name");
 
+				// TODO : do comparison not with strcmp, but with rapidjson mechanism
+				
 				if (request_is_valid)
 				{
 					rapidjson::Document users_json;
@@ -123,11 +125,18 @@ namespace hondo {
 					// TODO : add auth_fail_reason
 					response_msg.header.id = MessageType::ServerAuthFailure;
 					
-					/*cJSON* response_json = cJSON_CreateObject();
-					// TODO : check if response_json is null
-					cJSON* auth_result = cJSON_CreateString("");*/
-					//std::string response = "{'auth_fail_reason':''}";
-					//response_msg << response;
+					std::string auth_fail_reason;
+
+					if (!request_is_valid)
+						auth_fail_reason = "Auth Request JSON Object was not valid (must have 3 members: user, password, db_name)";
+					else if (!user_found)
+						auth_fail_reason = "User with provided login does not exist";
+					else if (!password_is_right)
+						auth_fail_reason = "Provided password doesn not match the user's actual password";
+					else if (!has_grant)
+						auth_fail_reason = "User does not have permission to access db with provided name";
+					
+					response_msg << auth_fail_reason;
 				}
 
 				client->Send(response_msg);

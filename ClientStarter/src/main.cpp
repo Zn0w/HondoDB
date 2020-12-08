@@ -15,5 +15,7 @@ int main(int argc, char* argv[])
 {
 	hondo::HondoDB db(hondo::Connection("127.0.0.1", "252525", "daniil", "12345", "cars"));
 
+	system("pause");
+
 	return 0;
 }
