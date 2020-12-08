@@ -69,19 +69,9 @@ namespace hondo {
 				bool password_is_right = false;
 				bool has_grant = false;
 				
-				const char* json = "{\"user\":\"daniil\",\"password\":\"12345\",\"db_name\":\"cars\"}";
-				rapidjson::Document d;
-				d.Parse(json);
-				d.IsObject();
-
 				std::string auth_request = msg.body;
 				rapidjson::Document auth_request_json;
 				auth_request_json.Parse(auth_request.c_str());
-				auth_request_json.IsObject();
-				auth_request_json["user"].GetString();
-				auth_request_json.HasMember("user");
-				auth_request_json.HasMember("password");
-				auth_request_json.HasMember("db_name");
 
 				request_is_valid = 
 					auth_request_json.HasMember("user") &&
@@ -111,10 +101,16 @@ namespace hondo {
 									password_is_right = true;
 							}
 
-							if (password_is_right && i->HasMember("db_name"))
+							if (password_is_right && i->HasMember("grants"))
 							{
-								if (strcmp((*i)["password"].GetString(), auth_request_json["password"].GetString()) == 0)
-									has_grant = true;
+								auto user_grants = (*i)["grants"].GetArray();
+
+								for (rapidjson::Value::ConstValueIterator j = user_grants.Begin(); j != user_grants.End(); j++)
+									if (strcmp((*j).GetString(), auth_request_json["db_name"].GetString()) == 0)
+									{
+										has_grant = true;
+										break;
+									}
 							}
 						}
 					}
