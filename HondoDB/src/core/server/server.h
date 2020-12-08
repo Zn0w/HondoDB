@@ -73,7 +73,7 @@ namespace hondo {
 				rapidjson::Document d;
 				d.Parse(json);
 				d.IsObject();
-				
+
 				std::string auth_request = msg.body;
 				rapidjson::Document auth_request_json;
 				auth_request_json.Parse(auth_request.c_str());

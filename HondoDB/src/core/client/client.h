@@ -28,7 +28,7 @@ namespace hondo {
 			olc::net::message<MessageType> msg;
 			msg.header.id = MessageType::Authenticate;
 
-			std::string auth_json_str = "{\"user\":\"" + user + "\",\"" + password + "\":\"12345\",\"" + db_name + "\":\"cars\"}";
+			std::string auth_json_str = "{\"user\":\"" + user + "\", \"password\":\"" + password + "\", \"db_name\":\"" + db_name + "\"}";
 
 			msg << auth_json_str;
 			Send(msg);
