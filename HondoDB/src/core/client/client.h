@@ -52,6 +52,11 @@ namespace hondo {
 			msg.header.id = MessageType::MessageAll;
 			Send(msg);
 		}
+
+		void send_request(std::string request)
+		{
+			
+		}
 	};
 
 }

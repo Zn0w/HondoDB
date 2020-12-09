@@ -15,7 +15,7 @@ HondoDB::HondoDB(Connection c)
 		client_server_thread = std::thread([this]() { process_client_server_interactions(); });
 	}
 	else
-		;// TODO
+		status = DatabaseObjectStatus::ConnectFail;
 }
 
 HondoDB::~HondoDB()
@@ -26,10 +26,32 @@ HondoDB::~HondoDB()
 		client_server_thread.join();
 }
 
-Collection HondoDB::get(std::string name)
+
+rapidjson::Document HondoDB::create()
 {
-	return Collection(&connection, name);
+	
 }
+
+rapidjson::Document HondoDB::retrieve()
+{}
+
+rapidjson::Document HondoDB::update()
+{}
+
+rapidjson::Document HondoDB::destroy()
+{}
+
+rapidjson::Document HondoDB::retrieve_all()
+{}
+
+rapidjson::Document HondoDB::nuke()
+{}
+
+DatabaseObjectStatus HondoDB::get_status()
+{
+	return status;
+}
+
 
 void HondoDB::process_client_server_interactions()
 {
@@ -48,6 +70,7 @@ void HondoDB::process_client_server_interactions()
 				case hondo::MessageType::ServerAccept:
 				{
 					std::cout << "HondoDB Server Accepted Connection" << std::endl;
+					status = DatabaseObjectStatus::Connected;
 				}
 				break;
 
@@ -55,12 +78,14 @@ void HondoDB::process_client_server_interactions()
 				{
 					std::cout << "HondoDB Server Rejected Connection" << std::endl;
 					quit = true;
+					status = DatabaseObjectStatus::Denied;
 				}
 				break;
 
 				case hondo::MessageType::ServerAuthSuccess:
 				{
 					std::cout << "HondoDB Auth Success" << std::endl;
+					status = DatabaseObjectStatus::Authorized;
 				}
 				break;
 
@@ -69,6 +94,7 @@ void HondoDB::process_client_server_interactions()
 					std::cout << "HondoDB Auth Failure" << std::endl;
 					std::cout << msg.body << std::endl;
 					quit = true;
+					status = DatabaseObjectStatus::ServerAuthFail;
 				}
 				break;
 				}
@@ -78,6 +104,7 @@ void HondoDB::process_client_server_interactions()
 		{
 			std::cout << "Server Down\n";
 			quit = true;
+			status = DatabaseObjectStatus::ServerDown;
 		}
 	}
 }
