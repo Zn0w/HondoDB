@@ -185,7 +185,7 @@ namespace hondo {
 				if (request_json.IsObject())
 					response_json.AddMember("is_object", "true", allocator);
 				else
-					response_json.AddMember("is_object", "true", allocator);
+					response_json.AddMember("is_object", "false", allocator);
 
 				rapidjson::StringBuffer strbuf;
 				rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
