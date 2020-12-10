@@ -53,14 +53,14 @@ public:
 	
 	// TODO : maybe make a universal function, so the user of api has to specify required operation inside the json_object
 	//			(make it all up to the protrocol/specification)
-	void create(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handle_function);
-	void retrieve(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
-	void update(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
-	void destroy(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
+	void create(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function);
+	void retrieve(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function);
+	void update(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function);
+	void destroy(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function);
 
-	void retrieve_all(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
+	void retrieve_all(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function);
 
-	void nuke(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
+	void nuke(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function);
 
 	DatabaseObjectStatus get_status();
 

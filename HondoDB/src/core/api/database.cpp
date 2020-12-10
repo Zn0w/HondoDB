@@ -58,19 +58,91 @@ void HondoDB::create(std::string collection_name, rapidjson::Document& json_obje
 	handlers_to_call.push_back(result_handler_function);
 }
 
-void HondoDB::retrieve(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
+void HondoDB::retrieve(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function)
+{
+	// TODO : check to see if object has property "cond" &  in other operation functions for their special properties (e.g. in update, 
+	//			the object has "cond" property and "update_list" property, which is array of record's property names and new values)
+	
+	if (!json_object.IsObject())
+		std::cout << "HondoDB: couldn't perform create, since the provided json_object data is not a valid json object";
+
+	rapidjson::Document retrieve_request_json;
+	retrieve_request_json.SetObject();
+
+	rapidjson::Document::AllocatorType& allocator = retrieve_request_json.GetAllocator();
+
+	retrieve_request_json.AddMember("operation", "retrieve", allocator);
+
+	rapidjson::Value collection(rapidjson::kStringType);
+	collection.SetString(collection_name.c_str(), allocator);
+	retrieve_request_json.AddMember("collection", collection, allocator);
+	// object is a condition (filter)
+	retrieve_request_json.AddMember("object", json_object, allocator);
+
+	rapidjson::StringBuffer strbuf;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	retrieve_request_json.Accept(writer);
+
+	client.send_request(std::string(strbuf.GetString()));
+	handlers_to_call.push_back(result_handler_function);
+}
+
+void HondoDB::update(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function)
+{
+	if (!json_object.IsObject())
+		std::cout << "HondoDB: couldn't perform create, since the provided json_object data is not a valid json object";
+
+	rapidjson::Document update_request_json;
+	update_request_json.SetObject();
+
+	rapidjson::Document::AllocatorType& allocator = update_request_json.GetAllocator();
+
+	update_request_json.AddMember("operation", "update", allocator);
+
+	rapidjson::Value collection(rapidjson::kStringType);
+	collection.SetString(collection_name.c_str(), allocator);
+	update_request_json.AddMember("collection", collection, allocator);
+	// object is a condition (filter) & list of pairs (property, new_value)
+	update_request_json.AddMember("object", json_object, allocator);
+
+	rapidjson::StringBuffer strbuf;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	update_request_json.Accept(writer);
+
+	client.send_request(std::string(strbuf.GetString()));
+	handlers_to_call.push_back(result_handler_function);
+}
+
+void HondoDB::destroy(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function)
+{
+	if (!json_object.IsObject())
+		std::cout << "HondoDB: couldn't perform create, since the provided json_object data is not a valid json object";
+
+	rapidjson::Document delete_request_json;
+	delete_request_json.SetObject();
+
+	rapidjson::Document::AllocatorType& allocator = delete_request_json.GetAllocator();
+
+	delete_request_json.AddMember("operation", "delete", allocator);
+
+	rapidjson::Value collection(rapidjson::kStringType);
+	collection.SetString(collection_name.c_str(), allocator);
+	delete_request_json.AddMember("collection", collection, allocator);
+	// object is a condition (filter)
+	delete_request_json.AddMember("object", json_object, allocator);
+
+	rapidjson::StringBuffer strbuf;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	delete_request_json.Accept(writer);
+
+	client.send_request(std::string(strbuf.GetString()));
+	handlers_to_call.push_back(result_handler_function);
+}
+
+void HondoDB::retrieve_all(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function)
 {}
 
-void HondoDB::update(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
-{}
-
-void HondoDB::destroy(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
-{}
-
-void HondoDB::retrieve_all(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
-{}
-
-void HondoDB::nuke(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
+void HondoDB::nuke(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function)
 {}
 
 
