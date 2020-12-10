@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <functional>
+#include <map>
 
-#include "../vendor/rapidjson/document.h"
-#include "../vendor/rapidjson/writer.h"
-#include "../vendor/rapidjson/stringbuffer.h"
+#include "../json/item.h"
 
 #include "../client/client.h"
 #include "connection.h"
@@ -26,6 +26,8 @@ enum DatabaseObjectStatus
 	InRAM,
 	Authorized,
 };
+
+typedef uint32_t HandlerFunctionId;
 	
 class HondoDB
 {
@@ -38,20 +40,27 @@ private:
 
 	DatabaseObjectStatus status;
 
+	// TODO : maybe std::vector is good enough?? are messages always going to be processed in queue?
+	//HandlerFunctionId counter = 1;
+	//std::map<HandlerFunctionId, std::function<void(rapidjson::Document)>> handlers_to_call;
+	std::deque<std::function<void(rapidjson::Document&)>> handlers_to_call;
+
 
 public:
 	HondoDB();	// set up a temporary db in computer memory
 	HondoDB(Connection c);
 	~HondoDB();
 	
-	rapidjson::Document create();
-	rapidjson::Document retrieve();
-	rapidjson::Document update();
-	rapidjson::Document destroy();
+	// TODO : maybe make a universal function, so the user of api has to specify required operation inside the json_object
+	//			(make it all up to the protrocol/specification)
+	void create(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handle_function);
+	void retrieve(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
+	void update(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
+	void destroy(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
 
-	rapidjson::Document retrieve_all();
+	void retrieve_all(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
 
-	rapidjson::Document nuke();
+	void nuke(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function);
 
 	DatabaseObjectStatus get_status();
 

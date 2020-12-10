@@ -27,25 +27,47 @@ HondoDB::~HondoDB()
 }
 
 
-rapidjson::Document HondoDB::create()
+void HondoDB::create(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document&)> result_handler_function)
 {
+	if (!json_object.IsObject())
+		// TODO : make error messaging more clear (add details of what db object it is, etc.)
+		std::cout << "HondoDB: couldn't perform create, since the provided json_object data is not a valid json object";
 	
+	rapidjson::Document create_request_json;
+	create_request_json.SetObject();
+
+	rapidjson::Document::AllocatorType& allocator = create_request_json.GetAllocator();
+
+	create_request_json.AddMember("operation", "create", allocator);
+	// !!! is this gonna work?
+	create_request_json.AddMember("object", json_object, allocator);
+
+	// TODO : make it possible to send json object in binary form without having to translate them into strings
+
+	rapidjson::StringBuffer strbuf;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+	create_request_json.Accept(writer);
+
+	client.send_request(std::string(strbuf.GetString()));
+	//handlers_to_call.insert(std::pair<HandlerFunctionId, std::function<void(rapidjson::Document)>>(counter++, result_handler_function));
+	handlers_to_call.push_back(result_handler_function);
 }
 
-rapidjson::Document HondoDB::retrieve()
+void HondoDB::retrieve(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
 {}
 
-rapidjson::Document HondoDB::update()
+void HondoDB::update(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
 {}
 
-rapidjson::Document HondoDB::destroy()
+void HondoDB::destroy(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
 {}
 
-rapidjson::Document HondoDB::retrieve_all()
+void HondoDB::retrieve_all(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
 {}
 
-rapidjson::Document HondoDB::nuke()
+void HondoDB::nuke(std::string collection_name, rapidjson::Document& json_object, std::function<void(rapidjson::Document)> result_handle_function)
 {}
+
 
 DatabaseObjectStatus HondoDB::get_status()
 {
@@ -95,6 +117,21 @@ void HondoDB::process_client_server_interactions()
 					std::cout << msg.body << std::endl;
 					quit = true;
 					status = DatabaseObjectStatus::ServerAuthFail;
+				}
+				break;
+
+				case hondo::MessageType::DBQueryResult:
+				{
+					std::cout << "HondoDB Query Result" << std::endl;
+					std::cout << msg.body << std::endl;
+					
+					auto handler_function = std::move(handlers_to_call.front());
+					handlers_to_call.pop_front();
+
+					rapidjson::Document response_json;
+					response_json.Parse(msg.body.c_str());
+
+					handler_function(response_json);
 				}
 				break;
 				}

@@ -164,6 +164,38 @@ namespace hondo {
 
 			}
 			break;
+
+			case MessageType::DBQuery:
+			{
+				std::cout << "[" << client->GetID() << "]: DB Query\n";
+
+				
+				olc::net::message<MessageType> response_msg;
+				response_msg.header.id = MessageType::DBQueryResult;
+
+				std::cout << "db request json: " << msg.body << std::endl;
+				rapidjson::Document request_json;
+				request_json.Parse(msg.body.c_str());
+
+				rapidjson::Document response_json;
+				response_json.SetObject();
+
+				rapidjson::Document::AllocatorType& allocator = response_json.GetAllocator();
+
+				if (request_json.IsObject())
+					response_json.AddMember("is_object", "true", allocator);
+				else
+					response_json.AddMember("is_object", "true", allocator);
+
+				rapidjson::StringBuffer strbuf;
+				rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+				response_json.Accept(writer);
+				
+				response_msg << std::string(strbuf.GetString());
+				
+				client->Send(response_msg);
+			}
+			break;
 			}
 		}
 	};

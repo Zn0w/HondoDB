@@ -55,7 +55,10 @@ namespace hondo {
 
 		void send_request(std::string request)
 		{
-			
+			olc::net::message<MessageType> msg;
+			msg.header.id = MessageType::DBQuery;
+			msg << request;
+			Send(msg);
 		}
 	};
 

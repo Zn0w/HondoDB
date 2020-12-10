@@ -1,4 +1,4 @@
-#include "collection.h"
+/*#include "collection.h"
 
 
 namespace hondo {
@@ -14,4 +14,4 @@ Item Collection::retrieve_all()
 	return Item();
 }
 
-}
+}*/

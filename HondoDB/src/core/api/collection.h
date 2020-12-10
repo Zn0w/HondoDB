@@ -3,7 +3,7 @@
 		JSON data representing the result of the operation will be returned)
 */
 
-#pragma once
+/*#pragma once
 
 #include <string>
 
@@ -35,4 +35,4 @@ public:
 	Item nuke();
 };
 
-}
+}*/
