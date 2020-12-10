@@ -39,7 +39,12 @@ void HondoDB::create(std::string collection_name, rapidjson::Document& json_obje
 	rapidjson::Document::AllocatorType& allocator = create_request_json.GetAllocator();
 
 	create_request_json.AddMember("operation", "create", allocator);
-	// !!! is this gonna work?
+
+	rapidjson::Value collection(rapidjson::kStringType);
+	collection.SetString(collection_name.c_str(), allocator);
+	create_request_json.AddMember("collection", collection, allocator);
+
+	// !!! is this gonna work? UPD: yes it does!
 	create_request_json.AddMember("object", json_object, allocator);
 
 	// TODO : make it possible to send json object in binary form without having to translate them into strings
