@@ -16,6 +16,9 @@ HondoDB::HondoDB(Connection c)
 	}
 	else
 		status = DatabaseObjectStatus::ConnectFail;
+
+	// wait until rejected or authorized
+	while (status != DatabaseObjectStatus::Denied && status != DatabaseObjectStatus::Authorized && status != DatabaseObjectStatus::ServerAuthFail);
 }
 
 HondoDB::~HondoDB()
