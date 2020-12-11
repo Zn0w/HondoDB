@@ -48,7 +48,7 @@ private:
 
 public:
 	HondoDB();	// set up a temporary db in computer memory
-	HondoDB(Connection c);
+	HondoDB(Connection c, std::function<void(DatabaseObjectStatus)>);
 	~HondoDB();
 	
 	// TODO : maybe make a universal function, so the user of api has to specify required operation inside the json_object

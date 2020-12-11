@@ -7,7 +7,7 @@ namespace hondo {
 	TODO : once net is working, check if able to establish connection, if not, set a temporary db environment in computer memory
 */
 
-HondoDB::HondoDB(Connection c)
+HondoDB::HondoDB(Connection c, std::function<void(DatabaseObjectStatus)> handler)
 	: connection(c)
 {
 	if (client.Connect(connection.address, std::stoi(connection.port)))
@@ -18,7 +18,15 @@ HondoDB::HondoDB(Connection c)
 		status = DatabaseObjectStatus::ConnectFail;
 
 	// wait until rejected or authorized
-	while (status != DatabaseObjectStatus::Denied && status != DatabaseObjectStatus::Authorized && status != DatabaseObjectStatus::ServerAuthFail);
+	while (
+		status != DatabaseObjectStatus::Denied &&
+		status != DatabaseObjectStatus::Authorized &&
+		status != DatabaseObjectStatus::ServerAuthFail &&
+		status != DatabaseObjectStatus::ServerDown &&
+		status != DatabaseObjectStatus::ConnectFail
+	);
+
+	handler(status);
 }
 
 HondoDB::~HondoDB()

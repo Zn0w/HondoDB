@@ -13,7 +13,33 @@ using asio::ip::tcp;
 
 int main(int argc, char* argv[])
 {
-	hondo::HondoDB db(hondo::Connection("127.0.0.1", "252525", "daniil", "12345", "car_shop"));
+	hondo::HondoDB db(hondo::Connection("127.0.0.1", "252525", "daniil", "12345", "car_shop"), [](hondo::DatabaseObjectStatus status) {
+		if (status == hondo::DatabaseObjectStatus::Authorized)
+		{
+			std::cout << "Was successfully connected & authorized" << std::endl;
+			return 1;
+		}
+		else if (status == hondo::DatabaseObjectStatus::ServerAuthFail)
+		{
+			std::cout << "Didn't authorize" << std::endl;
+			return 1;
+		}
+		else if (status == hondo::DatabaseObjectStatus::ConnectFail)
+		{
+			std::cout << "Failed to connect" << std::endl;
+			return 1;
+		}
+		else if (status == hondo::DatabaseObjectStatus::ServerDown)
+		{
+			std::cout << "Server was down" << std::endl;
+			return 1;
+		}
+		else if (status == hondo::DatabaseObjectStatus::Connected)
+		{
+			std::cout << "Something wrong happened while trying to send auth request or tryeing to recieve auth response" << std::endl;
+			return 1;
+		}
+	});
 
 	rapidjson::Document new_car_object_json;
 	new_car_object_json.SetObject();
@@ -27,7 +53,7 @@ int main(int argc, char* argv[])
 		rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 		response_json.Accept(writer);
 
-		std::cout << "Output response json from the handler function: " << strbuf.GetString() << std::endl;
+		std::cout << "Create op result: " << strbuf.GetString() << std::endl;
 	});
 
 	rapidjson::Document condition_object_json;
@@ -41,7 +67,7 @@ int main(int argc, char* argv[])
 		rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 		response_json.Accept(writer);
 
-		std::cout << "Output response json from the handler function: " << strbuf.GetString() << std::endl;
+		std::cout << "Retieve op result: " << strbuf.GetString() << std::endl;
 	});
 
 	system("pause");
