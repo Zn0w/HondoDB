@@ -211,12 +211,36 @@ namespace hondo {
 					rapidjson::Document request_json;
 					request_json.Parse(msg.body.c_str());
 
-					response_json.AddMember("success", "true", allocator);
-					
 					if (request_json.IsObject())
-						response_json.AddMember("message", "is_object = true", allocator);
+					{
+						if (request_json.HasMember("operation") && request_json["operation"].IsString() &&
+							request_json.HasMember("collection") && request_json["collection"].IsString() &&
+							request_json.HasMember("object") && request_json["object"].IsObject())
+						{
+							if (request_json["operation"] == "create")
+							{
+								// process create operation
+								response_json.AddMember("success", "true", allocator);
+								response_json.AddMember("message", "processing create operation", allocator);
+							}
+							else if (request_json["operation"] == "retrieve")
+							{
+								// process retrieve operation
+								response_json.AddMember("success", "true", allocator);
+								response_json.AddMember("message", "processing retrieve operation", allocator);
+							}
+						}
+						else
+						{
+							response_json.AddMember("success", "false", allocator);
+							response_json.AddMember("message", "invalid request object (must have operation:string, collection:string, object:object)", allocator);
+						}
+					}
 					else
-						response_json.AddMember("message", "is_object = false", allocator);
+					{
+						response_json.AddMember("success", "false", allocator);
+						response_json.AddMember("message", "invalid request (is not an object)", allocator);
+					}
 				}
 				else
 				{
