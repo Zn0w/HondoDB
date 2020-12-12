@@ -39,6 +39,11 @@ int main(int argc, char* argv[])
 			std::cout << "Something wrong happened while trying to send auth request or tryeing to recieve auth response" << std::endl;
 			return 1;
 		}
+		else
+		{
+			std::cout << "Something unexpected happened" << std::endl;
+			return 1;
+		}
 	});
 
 	rapidjson::Document new_car_object_json;

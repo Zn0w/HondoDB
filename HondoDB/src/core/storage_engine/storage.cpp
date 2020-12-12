@@ -19,4 +19,10 @@ std::string StorageEngine::get_file_contents(std::string filename)
 	throw(errno);
 }
 
+bool StorageEngine::dir_exists(const char* dir_name)
+{
+	struct stat buffer;
+	return (stat(dir_name, &buffer) == 0 && buffer.st_mode & S_IFDIR);
+}
+
 }

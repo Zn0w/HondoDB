@@ -31,7 +31,24 @@ namespace hondo {
 	class Server : public olc::net::server_interface<MessageType>
 	{
 	private:
-		std::set<uint32_t> auth_clients;
+		struct DBUser
+		{
+			uint32_t id;
+			std::string db_name;
+		};
+		
+		std::vector<DBUser> auth_users;
+
+		std::vector<DBUser>::iterator find_auth_user(uint32_t id)
+		{
+			std::vector<DBUser>::iterator i;
+			
+			for (i = auth_users.begin(); i != auth_users.end(); ++i)
+				if (i->id = id)
+					return i;
+
+			return i;
+		}
 
 	
 	public:
@@ -129,7 +146,7 @@ namespace hondo {
 				{
 					response_msg.header.id = MessageType::ServerAuthSuccess;
 					
-					auth_clients.insert(client->GetID());
+					auth_users.push_back({ client->GetID(), auth_request_json["db_name"].GetString() });
 				}
 				else
 				{
@@ -187,7 +204,8 @@ namespace hondo {
 
 				rapidjson::Document::AllocatorType& allocator = response_json.GetAllocator();
 				
-				if (auth_clients.find(client->GetID()) != auth_clients.end())
+				auto user = find_auth_user(client->GetID());
+				if (user != auth_users.end())
 				{
 					std::cout << "db request json: " << msg.body << std::endl;
 					rapidjson::Document request_json;
