@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 #include "../vendor/olc_net/olc_net.h"
 
 #include "../vendor/rapidjson/document.h"
@@ -22,11 +24,16 @@ namespace hondo {
 		MessageAll,
 		Authenticate,
 		DBQuery,
-		DBQueryResult
+		DBQueryResult,
+		NoPermission
 	};
 	
 	class Server : public olc::net::server_interface<MessageType>
 	{
+	private:
+		std::set<uint32_t> auth_clients;
+
+	
 	public:
 		Server(uint16_t port) : olc::net::server_interface<MessageType>(port)
 		{}
@@ -119,10 +126,13 @@ namespace hondo {
 				}
 				
 				if (request_is_valid && user_found && password_is_right && has_grant)
+				{
 					response_msg.header.id = MessageType::ServerAuthSuccess;
+					
+					auth_clients.insert(client->GetID());
+				}
 				else
 				{
-					// TODO : add auth_fail_reason
 					response_msg.header.id = MessageType::ServerAuthFailure;
 					
 					std::string auth_fail_reason;
@@ -169,28 +179,37 @@ namespace hondo {
 			{
 				std::cout << "[" << client->GetID() << "]: DB Query\n";
 
-				
 				olc::net::message<MessageType> response_msg;
 				response_msg.header.id = MessageType::DBQueryResult;
-
-				std::cout << "db request json: " << msg.body << std::endl;
-				rapidjson::Document request_json;
-				request_json.Parse(msg.body.c_str());
 
 				rapidjson::Document response_json;
 				response_json.SetObject();
 
 				rapidjson::Document::AllocatorType& allocator = response_json.GetAllocator();
+				
+				if (auth_clients.find(client->GetID()) != auth_clients.end())
+				{
+					std::cout << "db request json: " << msg.body << std::endl;
+					rapidjson::Document request_json;
+					request_json.Parse(msg.body.c_str());
 
-				if (request_json.IsObject())
-					response_json.AddMember("is_object", "true", allocator);
+					response_json.AddMember("success", "true", allocator);
+					
+					if (request_json.IsObject())
+						response_json.AddMember("message", "is_object = true", allocator);
+					else
+						response_json.AddMember("message", "is_object = false", allocator);
+				}
 				else
-					response_json.AddMember("is_object", "false", allocator);
+				{
+					response_json.AddMember("success", "false", allocator);
+					response_json.AddMember("message", "No permission", allocator);
+				}
 
 				rapidjson::StringBuffer strbuf;
 				rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
 				response_json.Accept(writer);
-				
+
 				response_msg << std::string(strbuf.GetString());
 				
 				client->Send(response_msg);

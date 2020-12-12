@@ -17,7 +17,8 @@ namespace hondo {
 		MessageAll,
 		Authenticate,
 		DBQuery,
-		DBQueryResult
+		DBQueryResult,
+		NoPermission
 	};
 	
 	class Client : public olc::net::client_interface<MessageType>
