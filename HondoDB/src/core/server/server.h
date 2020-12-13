@@ -81,10 +81,10 @@ namespace hondo {
 				std::cout << "[" << client->GetID() << "]: Body: " << msg.body << std::endl;
 
 				std::string users = StorageEngine::get_file_contents("data/meta/users.hondodb");
-				std::string cars = StorageEngine::get_file_contents("data/collections/cars.hondodb");
+				//std::string cars = StorageEngine::get_file_contents("data/collections/cars.hondodb");
 
 				std::cout << "[" << client->GetID() << "]: users: " << users << std::endl;
-				std::cout << "[" << client->GetID() << "]: cars: " << cars << std::endl;
+				//std::cout << "[" << client->GetID() << "]: cars: " << cars << std::endl;
 
 				olc::net::message<MessageType> response_msg;
 
@@ -226,8 +226,22 @@ namespace hondo {
 							else if (request_json["operation"] == "retrieve")
 							{
 								// process retrieve operation
-								response_json.AddMember("success", "true", allocator);
-								response_json.AddMember("message", "processing retrieve operation", allocator);
+								std::string resource_path = "data/db/" + user->db_name + "/collections/" + request_json["collection"].GetString() + ".hondodb";
+								std::string collection_data_str = StorageEngine::get_file_contents(resource_path);
+								
+								rapidjson::Document data_json;
+								data_json.Parse(collection_data_str.c_str());
+								if (data_json.IsObject())
+								{
+									response_json.AddMember("success", "true", allocator);
+									response_json.AddMember("message", "result of retrieve operation is in data element", allocator);
+									response_json.AddMember("result", data_json, allocator);
+								}
+								else
+								{
+									response_json.AddMember("success", "false", allocator);
+									response_json.AddMember("message", "the requested collection data file is corrupted", allocator);
+								}
 							}
 						}
 						else
